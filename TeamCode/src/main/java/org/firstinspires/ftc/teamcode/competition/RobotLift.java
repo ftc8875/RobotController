@@ -7,12 +7,18 @@ import org.firstinspires.ftc.teamcode.general.RobotComponent;
 
 public class RobotLift implements RobotComponent {
 
+    private static final float COUNTS_PER_INCH = 384;
+
+    private static final float EXTEND_INCHES = 5.1f;
+    private static final float RETRACT_INCHES = 0.1f;
+    private static final float OVERSHOOT_INCHES = EXTEND_INCHES + 0.25f;
+
     private static final float SERVO_CLOSE = 0;
     private static final float SERVO_OPEN = 90;
 
-    private static final int EXTEND_ENCODER_POSITION = 1000;
-    private static final int RETRACT_ENCODER_POSITION = 1000;
-    private static final int OVERSHOOT_ENCODER_POSITION = 1050;
+    private static final int EXTEND_ENCODER_POSITION = Math.round(EXTEND_INCHES * COUNTS_PER_INCH);
+    private static final int RETRACT_ENCODER_POSITION = Math.round(RETRACT_INCHES * COUNTS_PER_INCH);
+    private static final int OVERSHOOT_ENCODER_POSITION = Math.round(OVERSHOOT_INCHES * COUNTS_PER_INCH);
 
     private static final float LIFT_EXTEND_POWER = 0.95f;
     private static final float LIFT_RETRACT_POWER = 0.5f;
@@ -62,11 +68,13 @@ public class RobotLift implements RobotComponent {
     private void extendLifter(float power) {
         liftMotor.setTargetPosition(EXTEND_ENCODER_POSITION);
         liftMotor.setPower(power);
+        while(liftMotor.isBusy()) {}
     }
 
     private void retractLifter(float power) {
         liftMotor.setTargetPosition(RETRACT_ENCODER_POSITION);
         liftMotor.setPower(power);
+        while(liftMotor.isBusy()) {}
     }
 
     private void openHook() {
@@ -80,6 +88,7 @@ public class RobotLift implements RobotComponent {
     private void overShoot() {
         liftMotor.setTargetPosition(OVERSHOOT_ENCODER_POSITION);
         liftMotor.setPower(OVERSHOOT_POWER);
+        while(liftMotor.isBusy()) {}
     }
 
     private void freezeMotor() {

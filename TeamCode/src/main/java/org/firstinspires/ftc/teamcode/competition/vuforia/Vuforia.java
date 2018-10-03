@@ -1,15 +1,23 @@
 package org.firstinspires.ftc.teamcode.competition.vuforia;
 
+import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.vuforia.Trackable;
 
+import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.teamcode.general.RobotComponent;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Vuforia implements RobotComponent {
+
+    private String vuforiaKey;
+
+    private VuforiaLocalizer vuforiaLocalizer;
+    private List<CustomVuforiaTrackable> trackables;
 
     /**
      * Initializes new Vuforia instance.
@@ -26,12 +34,40 @@ public class Vuforia implements RobotComponent {
      *                       * X: +ve in the forward direction of the robot
      *                       * Y: +ve to the left of the robot
      *                       * Z: +ve upwards of the robot
+     * @param vuforiaKey - the unique key generated on Vuforia's website
+     * @param hardwareMap - the hardware map for the current op mode
      */
     public Vuforia(VuforiaLocalizer.CameraDirection cameraDirection,
                    boolean enableCameraMonitoring,
                    List<CustomVuforiaTrackable> trackables,
-                   OpenGLMatrix cameraLocation) {
-        // TODO implement
+                   OpenGLMatrix cameraLocation,
+                   String vuforiaKey,
+                   HardwareMap hardwareMap) {
+
+        this.trackables = trackables;
+
+        VuforiaLocalizer.Parameters parameters;
+        if(enableCameraMonitoring) {
+            parameters = new VuforiaLocalizer.Parameters(
+                    hardwareMap.appContext.getResources().getIdentifier(
+                            "cameraMonitorViewId",
+                            "id",
+                            hardwareMap.appContext.getPackageName())
+            );
+        } else {
+            parameters = new VuforiaLocalizer.Parameters();
+        }
+
+        parameters.vuforiaLicenseKey = vuforiaKey;
+        parameters.cameraDirection = cameraDirection;
+
+        vuforiaLocalizer = ClassFactory.getInstance().createVuforia(parameters);
+
+        for(CustomVuforiaTrackable trackable : trackables) {
+            ((VuforiaTrackableDefaultListener)(trackable.getTrackable().getListener()))
+                    .setPhoneInformation(cameraLocation, cameraDirection);
+        }
+
     }
 
     public boolean isVisible(String trackableName) {
