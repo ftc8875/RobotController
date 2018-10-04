@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.competition;
+package org.firstinspires.ftc.teamcode.competition.hardware;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -9,24 +9,13 @@ import org.firstinspires.ftc.teamcode.general.RobotComponent;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class TankDrive implements RobotComponent {
-
-    private ArrayList<DcMotor> leftMotors = new ArrayList<>();
-    private ArrayList<DcMotor> rightMotors = new ArrayList<>();
+public class TankDrive extends DriveTrain implements RobotComponent {
 
     private float leftPower;
     private float rightPower;
 
-    public TankDrive() {}
-
-    public TankDrive leftMotors(DcMotor ... motors) {
-        leftMotors = new ArrayList<>(Arrays.asList(motors));
-        return this;
-    }
-
-    public TankDrive rightMotors(DcMotor ... motors) {
-        rightMotors = new ArrayList<>(Arrays.asList(motors));
-        return this;
+    public TankDrive(DriveTrainMotors motors) {
+        super(motors);
     }
 
     /**
@@ -89,12 +78,12 @@ public class TankDrive implements RobotComponent {
     @Override
     public void init() {
         for(DcMotor motor : leftMotors) {
-            motor.setDirection(DcMotor.Direction.FORWARD);
+            motor.setDirection(DcMotor.Direction.REVERSE);
             initMotor(motor);
         }
 
         for(DcMotor motor : rightMotors) {
-            motor.setDirection(DcMotorSimple.Direction.REVERSE);
+            motor.setDirection(DcMotorSimple.Direction.FORWARD);
             initMotor(motor);
         }
     }
