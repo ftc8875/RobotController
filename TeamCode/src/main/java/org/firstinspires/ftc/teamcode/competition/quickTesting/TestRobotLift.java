@@ -19,7 +19,7 @@ public class TestRobotLift extends LinearOpMode {
         m = hardwareMap.get(DcMotor.class, "motor");
         s = hardwareMap.get(Servo.class, "servo");
 
-        robotLift = new RobotLift(m, s);
+        robotLift = new RobotLift(m, s, RobotLift.Mode.LIFT);
         robotLift.init();
 
         telemetry.addLine("Initialized");
@@ -30,7 +30,9 @@ public class TestRobotLift extends LinearOpMode {
         telemetry.addLine("STARTED");
         updateTelemetry(telemetry);
 
-        robotLift.lift();
+        robotLift.extend();
+        robotLift.closeHook();
+        robotLift.retract();
 
         telemetry.addLine("Done");
         updateTelemetry(telemetry);
