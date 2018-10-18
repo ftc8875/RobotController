@@ -1,37 +1,38 @@
 package org.firstinspires.ftc.teamcode.competition.vuforia;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.vuforia.Trackable;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
+import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 import org.firstinspires.ftc.teamcode.general.RobotComponent;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class Vuforia implements RobotComponent {
 
+    // TODO Clean up this mess. SRP much? Loose coupling? Come on! You can do better than this!
+
     private String vuforiaKey;
 
     private VuforiaLocalizer vuforiaLocalizer;
-    private Map<String, Trackable> trackables;
+    private Map<String, VuforiaTrackable> trackablesMap;
+    private VuforiaTrackables trackablesList;
 
     private VuforiaLocalizer.CameraDirection cameraDirection;
     private OpenGLMatrix cameraLocation;
     private String vuforiaAssetName;
-
-    private class Trackable {
-        protected VuforiaTrackable trackable;
-        protected OpenGLMatrix location;
-    }
 
     /**
      * Initializes new Vuforia instance.
@@ -49,6 +50,8 @@ public class Vuforia implements RobotComponent {
      * @param vuforiaKey - the unique key generated on Vuforia's website
      * @param vuforiaAssetName - the name of the asset set for the current season's VuMarks.
      *                         Example: "RoverRuckus"
+     * @param vuforiaTrackableNames - a list of the names to assign to each trackable in the asset
+     *                              set, in order for the asset set
      * @param hardwareMap - the hardware map for the current op mode
      */
     public Vuforia(VuforiaLocalizer.CameraDirection cameraDirection,
@@ -56,7 +59,11 @@ public class Vuforia implements RobotComponent {
                    OpenGLMatrix cameraLocation,
                    String vuforiaKey,
                    String vuforiaAssetName,
+                   List<String> vuforiaTrackableNames,
                    HardwareMap hardwareMap) {
+
+        // TODO split into multiple methods. A LOT of this should be in init()
+        // should this constructor really take such an ungodly number of args??
 
         this.cameraDirection = cameraDirection;
         this.cameraLocation = cameraLocation;
@@ -80,20 +87,27 @@ public class Vuforia implements RobotComponent {
 
         vuforiaLocalizer = ClassFactory.getInstance().createVuforia(parameters);
 
+        trackablesList = vuforiaLocalizer.loadTrackablesFromAsset(vuforiaAssetName);
+
+        if (trackablesList.size() != vuforiaTrackableNames.size()) {
+            throw new RuntimeException(String.format(
+                    "Vuforia trackable names list is different size (%d) than Vuforia assets list" +
+                            "size (%d)", trackablesList.size(), vuforiaTrackableNames.size()));
+        }
+
+        trackablesMap = new HashMap<>();
+
+        for (int i=0; i<trackablesList.size(); i++) {
+            addTrackable(trackablesList.get(i), vuforiaTrackableNames.get(i), /* TODO add actual location matrix */ new OpenGLMatrix() /* BAD CODE */);
+        }
+
     }
 
-    public void addTrackable(VuforiaTrackable trackable, OpenGLMatrix location) {
-        Trackable t = new Trackable();
-        t.trackable = trackable;
-        t.location = location;
-        addPhoneInfoToTrackable(t);
-        trackables.put(t.trackable.getName(), t);
-    }
-
-    public void addTrackable(VuforiaTrackable trackable, float xPos, float yPos, float zPos,
-                             float xRot, float yRot, float zRot) {
-        addTrackable(trackable, createLocationMatrix(
-                xPos, yPos, zPos, xRot, yRot, zRot));
+    private void addTrackable(VuforiaTrackable trackable, String name, OpenGLMatrix location) {
+        trackable.setName(name);
+        trackable.setLocation(location);
+        addPhoneInfoToTrackable(trackable);
+        trackablesMap.put(name, trackable);
     }
 
     private OpenGLMatrix createLocationMatrix(
@@ -106,54 +120,102 @@ public class Vuforia implements RobotComponent {
     }
 
     public boolean isVisible(String trackableName) {
-        // TODO implement
-        return false;
+        VuforiaTrackable trackable = trackablesMap.get(trackableName);
+        VuforiaTrackableDefaultListener listener = getTrackableListener(trackable);
+        return listener.isVisible();
+    }
+
+    public boolean isVisible(VuforiaTrackable trackable) {
+        return isVisible(trackable.getName());
     }
 
     public List<VuforiaTrackable> visibleTrackables() {
-        // TODO implement
-        return new ArrayList<VuforiaTrackable>();
+        List<VuforiaTrackable> visibleTrackables = new ArrayList<>();
+        for (VuforiaTrackable trackable : trackablesMap.values()) {
+            if (isVisible(trackable)) {
+                visibleTrackables.add(trackable);
+            }
+        }
+        return visibleTrackables;
     }
 
     public OpenGLMatrix getRobotFieldPosition() {
-        // TODO implement
-        return new OpenGLMatrix();
+        // TODO test this!
+        List<VuforiaTrackable> visibleTrackables = visibleTrackables();
+        if (visibleTrackables.size() == 0) return null;
+        List<OpenGLMatrix> positions = new ArrayList<>();
+        for (VuforiaTrackable trackable : visibleTrackables) {
+            positions.add(getRobotPositionFromTrackable(trackable.getName()));
+        }
+        return averagePosition(positions);
     }
 
-    public OpenGLMatrix getRobotPositionToTrackable(String trackableName) {
-        // TODO implement
-        return new OpenGLMatrix();
+    // TODO test this? this is a mess...
+    private OpenGLMatrix averagePosition(List<OpenGLMatrix> positions) {
+        if (positions.size() == 1) return positions.get(0);
+        float Ex=0;
+        float Ey=0;
+        float Ez=0;
+        float ExRot=0;
+        float EyRot=0;
+        float EzRot=0;
+        float n = positions.size();
+        for (OpenGLMatrix position : positions) {
+            VectorF translation = position.getTranslation();
+            Orientation rotation = Orientation.getOrientation(position,
+                    AxesReference.EXTRINSIC, AxesOrder.XYZ,  AngleUnit.DEGREES);
+            Ex += translation.get(0);
+            Ey += translation.get(1);
+            Ez += translation.get(2);
+            ExRot += rotation.firstAngle;
+            EyRot += rotation.secondAngle;
+            EzRot += rotation.thirdAngle;
+        }
+
+        Ex /= n;
+        Ey /= n;
+        Ez /= n;
+        ExRot /= n;
+        EyRot /= n;
+        EzRot /= n;
+
+        return createLocationMatrix(Ex, Ey, Ez, ExRot, EyRot, EzRot);
+    }
+
+    // NOTE: Returns robot location relative to the FIELD. NOT relative to the trackable...
+    public OpenGLMatrix getRobotPositionFromTrackable(String trackableName) {
+        VuforiaTrackable trackable = trackablesMap.get(trackableName);
+        VuforiaTrackableDefaultListener listener = getTrackableListener(trackable);
+        return listener.getUpdatedRobotLocation();
+
     }
 
     private List<VuforiaTrackable> generateTrackableList(List<String> names) {
         List<VuforiaTrackable> list = new ArrayList<>();
-
         for (String name : names) {
-            list.add(this.trackables.get(name).trackable);
+            list.add(trackablesMap.get(name));
         }
-
         return list;
     }
 
-    private void addPhoneInfoToTrackable(Trackable trackable) {
-        ((VuforiaTrackableDefaultListener)(trackable.trackable.getListener()))
+    private void addPhoneInfoToTrackable(VuforiaTrackable trackable) {
+        ((VuforiaTrackableDefaultListener)(trackable.getListener()))
                 .setPhoneInformation(cameraLocation, cameraDirection);
+    }
+
+    private VuforiaTrackableDefaultListener getTrackableListener(VuforiaTrackable trackable) {
+        return (VuforiaTrackableDefaultListener)trackable.getListener();
     }
 
     @Override
     public void init() {
-        for(Trackable trackable : this.trackables.values()) {
-            addPhoneInfoToTrackable(trackable);
-        }
-
-        // Whoops. I messed up. // TODO FIX. READ ConceptVuforiaNavRoverRuckus.java
-        this.vuforiaAssetName.activate();
-
         // TODO all the init stuff
     }
 
     @Override
-    public void start() {}
+    public void start() {
+        trackablesList.activate();
+    }
 
     @Override
     public void stop() {}
