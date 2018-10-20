@@ -126,23 +126,9 @@ public class Vuforia implements RobotComponent {
 
     @Override
     public void init() {
-        vuforiaLocalizer = ClassFactory.getInstance().createVuforia(makeParameters());
-
-        trackablesList = vuforiaLocalizer.loadTrackablesFromAsset(vuforiaAssetName);
-
-        if (trackablesList.size() != vuforiaTrackableNames.size()) {
-            throw new RuntimeException(String.format(
-                    "Vuforia trackable names list is different size (%d) than Vuforia assets list" +
-                            "size (%d)", trackablesList.size(), vuforiaTrackableNames.size()));
-        }
-
-        trackablesMap = new HashMap<>();
-
-        for (int i=0; i<trackablesList.size(); i++) {
-            addTrackable(trackablesList.get(i),
-                    vuforiaTrackableNames.get(i),
-                    vuforiaTrackableLocations.get(i));
-        }
+        initVuforiaLocalizer();
+        initTrackablesList();
+        initAllTrackables();
     }
 
     @Override
@@ -181,6 +167,29 @@ public class Vuforia implements RobotComponent {
         parameters.cameraDirection = cameraDirection;
 
         return parameters;
+    }
+
+    private void initVuforiaLocalizer() {
+        vuforiaLocalizer = ClassFactory.getInstance().createVuforia(makeParameters());
+    }
+
+    private void initTrackablesList() {
+        trackablesList = vuforiaLocalizer.loadTrackablesFromAsset(vuforiaAssetName);
+
+        if (trackablesList.size() != vuforiaTrackableNames.size()) {
+            throw new RuntimeException(String.format(
+                    "Vuforia trackable names list is different size (%d) than Vuforia assets list" +
+                            "size (%d)", trackablesList.size(), vuforiaTrackableNames.size()));
+        }
+    }
+
+    private void initAllTrackables() {
+        trackablesMap = new HashMap<>();
+        for (int i=0; i<trackablesList.size(); i++) {
+            addTrackable(trackablesList.get(i),
+                    vuforiaTrackableNames.get(i),
+                    vuforiaTrackableLocations.get(i));
+        }
     }
 
     /**
