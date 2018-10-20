@@ -16,6 +16,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 import org.firstinspires.ftc.teamcode.general.RobotComponent;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +25,67 @@ import java.util.Map;
 public class Vuforia implements RobotComponent {
 
     // TODO Clean up this mess. SRP much? Loose coupling? Come on! You can do better than this!
+
+    public static class VuforiaBuilder {
+
+        private VuforiaLocalizer.CameraDirection cameraDirection;
+        private boolean enableCameraMonitoring = false;
+        private OpenGLMatrix cameraLocation;
+        private String vuforiaKey;
+        private String vuforiaAssetName;
+        private List<String> vuforiaTrackableNames;
+        private HardwareMap hardwareMap;
+
+        public VuforiaBuilder(String vuforiaKey) {
+            this.vuforiaKey = vuforiaKey;
+        }
+
+        public VuforiaBuilder withCameraDirection(VuforiaLocalizer.CameraDirection cameraDirection) {
+            this.cameraDirection = cameraDirection;
+            return this;
+        }
+
+        public VuforiaBuilder withCameraLocation(OpenGLMatrix cameraLocation) {
+            this.cameraLocation = cameraLocation;
+            return this;
+        }
+
+        public VuforiaBuilder withVuforiaAssetName(String vuforiaAssetName) {
+            this.vuforiaAssetName = vuforiaAssetName;
+            return this;
+        }
+
+        public VuforiaBuilder withVuforiaTrackableNames(String ... vuforiaTrackableNames) {
+            Collection<String> namesCollection = Arrays.asList(vuforiaTrackableNames);
+            this.vuforiaTrackableNames = new ArrayList<>();
+            this.vuforiaTrackableNames.addAll(namesCollection);
+            return this;
+        }
+
+        public VuforiaBuilder withVuforiaTrackableNames(List<String> vuforiaTrackableNames) {
+            this.vuforiaTrackableNames = vuforiaTrackableNames;
+            return this;
+        }
+
+        public VuforiaBuilder withCameraMonitoring(HardwareMap hardwareMap) {
+            this.hardwareMap = hardwareMap;
+            enableCameraMonitoring = true;
+            return this;
+        }
+
+        public Vuforia build() {
+            return new Vuforia(
+                    this.cameraDirection,
+                    this.enableCameraMonitoring,
+                    this.cameraLocation,
+                    this.vuforiaKey,
+                    this.vuforiaAssetName,
+                    this.vuforiaTrackableNames,
+                    this.hardwareMap
+            );
+
+        }
+    }
 
     private String vuforiaKey;
 
@@ -54,7 +117,7 @@ public class Vuforia implements RobotComponent {
      *                              set, in order for the asset set
      * @param hardwareMap - the hardware map for the current op mode
      */
-    public Vuforia(VuforiaLocalizer.CameraDirection cameraDirection,
+    private Vuforia(VuforiaLocalizer.CameraDirection cameraDirection,
                    boolean enableCameraMonitoring,
                    OpenGLMatrix cameraLocation,
                    String vuforiaKey,
