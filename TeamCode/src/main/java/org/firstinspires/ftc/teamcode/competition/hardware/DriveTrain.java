@@ -1,17 +1,20 @@
 package org.firstinspires.ftc.teamcode.competition.hardware;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.robot.Robot;
 
-import java.lang.reflect.Array;
+import org.firstinspires.ftc.teamcode.general.RobotComponent;
+
 import java.util.ArrayList;
 
-public abstract class DriveTrain {
+public interface DriveTrain extends RobotComponent {
 
-    protected ArrayList<DcMotor> leftMotors;
-    protected ArrayList<DcMotor> rightMotors;
+    /**
+     * Drive the robot, supplying the overall power to the robot, and the rate at which the robot
+     * should be turning.
+     * @param power: the overall power, -1 to 1
+     * @param turn: the rate at which to turn the robot, -1 to 1. -ve CW, +ve CCW.
+     */
+    void drive(float power, float turn);
 
-    public DriveTrain(DriveTrainMotors motors) {
-        this.leftMotors = motors.getLeftMotors();
-        this.rightMotors = motors.getRightMotors();
-    }
 }

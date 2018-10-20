@@ -2,20 +2,24 @@ package org.firstinspires.ftc.teamcode.competition.hardware;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.general.RobotComponent;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.List;
 
-public class TankDrive extends DriveTrain implements RobotComponent {
+public class TankDrive implements DriveTrain {
+
+    private List<DcMotor> leftMotors;
+    private List<DcMotor> rightMotors;
 
     private float leftPower;
     private float rightPower;
 
-    public TankDrive(DriveTrainMotors motors) {
-        super(motors);
+    protected TankDrive(TankDriveBuilder builder) {
+        this.leftMotors = builder.getLeftMotors();
+        this.rightMotors = builder.getRightMotors();
     }
 
     /**
@@ -23,18 +27,13 @@ public class TankDrive extends DriveTrain implements RobotComponent {
      * @param left: the power to give the left-side motors
      * @param right: the power to give the right-side motors
      */
-    public void drive(float left, float right) {
+    public void driveTank(float left, float right) {
         setLeftPower(left);
         setRightPower(right);
     }
 
-    /**
-     * Drive the robot, supplying the overall power to the robot, and the rate at which the robot
-     * should be turning.
-     * @param power: the overall power, -1 to 1
-     * @param turn: the rate at which to turn the robot, -1 to 1. -ve CW, +ve CCW.
-     */
-    public void driveTurn(float power, float turn) {
+    @Override
+    public void drive(float power, float turn) {
          setLeftPower(0.5f * (power - turn));
          setRightPower(0.5f * (power + turn));
     }
