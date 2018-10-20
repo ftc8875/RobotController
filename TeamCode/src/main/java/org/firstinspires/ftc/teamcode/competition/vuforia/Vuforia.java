@@ -166,42 +166,33 @@ public class Vuforia implements RobotComponent {
 
     }
 
-    private void addTrackable(VuforiaTrackable trackable, String name, OpenGLMatrix location) {
-        trackable.setName(name);
-        trackable.setLocation(location);
-        addPhoneInfoToTrackable(trackable);
-        trackablesMap.put(name, trackable);
-    }
-
-    private OpenGLMatrix createLocationMatrix(
-            float x, float y, float z,
-            float xRot, float yRot, float zRot) {
-        return new OpenGLMatrix()
-                .translated(x, y, z)
-                .rotated(AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES,
-                        xRot, yRot, zRot);
-    }
-
+    /**
+     * Returns whether a given Vuforia Trackable (eg VuMark) is visible
+     * @param trackableName - the name of the Trackable (assigned when building the Vuforia object)
+     */
     public boolean isVisible(String trackableName) {
         VuforiaTrackable trackable = trackablesMap.get(trackableName);
         VuforiaTrackableDefaultListener listener = getTrackableListener(trackable);
         return listener.isVisible();
     }
 
-    public boolean isVisible(VuforiaTrackable trackable) {
-        return isVisible(trackable.getName());
-    }
-
-    public List<VuforiaTrackable> visibleTrackables() {
-        List<VuforiaTrackable> visibleTrackables = new ArrayList<>();
-        for (VuforiaTrackable trackable : trackablesMap.values()) {
-            if (isVisible(trackable)) {
-                visibleTrackables.add(trackable);
-            }
+    /**
+     * Returns a list of all the names of the Vuforia Trackables (eg VuMarks) that are visible
+     */
+    public List<String> getVisibleTrackableNames() {
+        List<String> names = new ArrayList<>();
+        List<VuforiaTrackable> visibleTrackables = visibleTrackables();
+        for (VuforiaTrackable trackable : visibleTrackables) {
+            names.add(trackable.getName());
         }
-        return visibleTrackables;
+        return names;
     }
 
+    /**
+     * Returns the robot's current position on the field, as an OpenGLMatrix., using the Vuforia
+     * Trackables (eg VuMarks) that are currently visible.
+     * @return - the robot's position, or null if no Trackables are visible
+     */
     public OpenGLMatrix getRobotFieldPosition() {
         // TODO test this!
         List<VuforiaTrackable> visibleTrackables = visibleTrackables();
@@ -211,6 +202,99 @@ public class Vuforia implements RobotComponent {
             positions.add(getRobotPositionFromTrackable(trackable.getName()));
         }
         return averagePosition(positions);
+    }
+
+    /**
+     * Returns the robot's current position on the field, considering only one Trackable.
+     * @param trackableName - the name of the Trackable (assigned when building the Vuforia object)
+     * @return
+     */
+    public OpenGLMatrix getRobotPositionFromTrackable(String trackableName) {
+        VuforiaTrackable trackable = trackablesMap.get(trackableName);
+        VuforiaTrackableDefaultListener listener = getTrackableListener(trackable);
+        return listener.getUpdatedRobotLocation();
+
+    }
+
+
+    @Override
+    public void init() {
+        // TODO all the init stuff
+    }
+
+    @Override
+    public void start() {
+        trackablesList.activate();
+    }
+
+    @Override
+    public void stop() {}
+
+    @Override
+    public void emergencyStop() {
+        stop();
+    }
+
+    /**
+     * Add a trackable and handle its name and location
+     * @param trackable
+     * @param name
+     * @param location - location of Trackable relative to the field
+     */
+    private void addTrackable(VuforiaTrackable trackable, String name, OpenGLMatrix location) {
+        trackable.setName(name);
+        trackable.setLocation(location);
+        addPhoneInfoToTrackable(trackable);
+        trackablesMap.put(name, trackable);
+    }
+
+    /**
+     * Returns whether a Trackable is visible, given the trackable itself
+     */
+    private boolean isVisible(VuforiaTrackable trackable) {
+        return isVisible(trackable.getName());
+    }
+
+    /**
+     * Returns a list of the Trackables that are visible, as themselves, not their names
+     */
+    private List<VuforiaTrackable> visibleTrackables() {
+        List<VuforiaTrackable> visibleTrackables = new ArrayList<>();
+        for (VuforiaTrackable trackable : trackablesMap.values()) {
+            if (isVisible(trackable)) {
+                visibleTrackables.add(trackable);
+            }
+        }
+        return visibleTrackables;
+    }
+
+    /**
+     * Adds phone camera location and camera direction to the Trackable
+     * @param trackable
+     */
+    private void addPhoneInfoToTrackable(VuforiaTrackable trackable) {
+        ((VuforiaTrackableDefaultListener)(trackable.getListener()))
+                .setPhoneInformation(cameraLocation, cameraDirection);
+    }
+
+    /**
+     * Get the Listener from a Trackable
+     * @param trackable
+     * @return - the Trackable's listener
+     */
+    private VuforiaTrackableDefaultListener getTrackableListener(VuforiaTrackable trackable) {
+        return (VuforiaTrackableDefaultListener)trackable.getListener();
+    }
+
+    // BELOW THIS LINE ARE METHODS THAT NEED TO BE DELETED OR MOVED
+
+    private OpenGLMatrix createLocationMatrix(
+            float x, float y, float z,
+            float xRot, float yRot, float zRot) {
+        return new OpenGLMatrix()
+                .translated(x, y, z)
+                .rotated(AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES,
+                        xRot, yRot, zRot);
     }
 
     // TODO test this? this is a mess...
@@ -245,14 +329,10 @@ public class Vuforia implements RobotComponent {
         return createLocationMatrix(Ex, Ey, Ez, ExRot, EyRot, EzRot);
     }
 
-    // NOTE: Returns robot location relative to the FIELD. NOT relative to the trackable...
-    public OpenGLMatrix getRobotPositionFromTrackable(String trackableName) {
-        VuforiaTrackable trackable = trackablesMap.get(trackableName);
-        VuforiaTrackableDefaultListener listener = getTrackableListener(trackable);
-        return listener.getUpdatedRobotLocation();
-
-    }
-
+    /**
+     * Return a list of Trackables from their names
+     * @param names - list of names of Trackables
+     */
     private List<VuforiaTrackable> generateTrackableList(List<String> names) {
         List<VuforiaTrackable> list = new ArrayList<>();
         for (String name : names) {
@@ -261,30 +341,4 @@ public class Vuforia implements RobotComponent {
         return list;
     }
 
-    private void addPhoneInfoToTrackable(VuforiaTrackable trackable) {
-        ((VuforiaTrackableDefaultListener)(trackable.getListener()))
-                .setPhoneInformation(cameraLocation, cameraDirection);
-    }
-
-    private VuforiaTrackableDefaultListener getTrackableListener(VuforiaTrackable trackable) {
-        return (VuforiaTrackableDefaultListener)trackable.getListener();
-    }
-
-    @Override
-    public void init() {
-        // TODO all the init stuff
-    }
-
-    @Override
-    public void start() {
-        trackablesList.activate();
-    }
-
-    @Override
-    public void stop() {}
-
-    @Override
-    public void emergencyStop() {
-        stop();
-    }
 }
