@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.competition.quickTesting;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.competition.hardware.DriveTrainMotors;
+import org.firstinspires.ftc.teamcode.competition.hardware.TankDriveBuilder;
 import org.firstinspires.ftc.teamcode.competition.hardware.TankDrive;
 
 @TeleOp(name="Test Drive Train", group="Test")
@@ -13,10 +13,11 @@ public class TestDriveTrain extends OpMode {
 
     @Override
     public void init() {
-        DriveTrainMotors    motors = new DriveTrainMotors(hardwareMap);
-        motors.addLeftMotors("l");
-        motors.addRightMotors("r");
-        tankDrive = new TankDrive(motors);
+        tankDrive = new TankDriveBuilder(hardwareMap)
+                .withLeftMotors("l")
+                .withRightMotors("r")
+                .build();
+
         tankDrive.init();
     }
 
@@ -29,7 +30,7 @@ public class TestDriveTrain extends OpMode {
     public void loop() {
         float d = -gamepad1.left_stick_y;
         float t = gamepad1.right_stick_x;
-        tankDrive.driveTurn(d, t);
+        tankDrive.drive(d, t);
         telemetry.addData("Left ", "%.2f", d);
         telemetry.addData("Right", "%.2f", t);
     }
