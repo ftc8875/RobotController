@@ -201,7 +201,7 @@ public class Vuforia implements RobotComponent {
         for (VuforiaTrackable trackable : visibleTrackables) {
             positions.add(getRobotPositionFromTrackable(trackable.getName()));
         }
-        return averagePosition(positions);
+        return VuforiaHelper.averagePosition(positions);
     }
 
     /**
@@ -284,61 +284,6 @@ public class Vuforia implements RobotComponent {
      */
     private VuforiaTrackableDefaultListener getTrackableListener(VuforiaTrackable trackable) {
         return (VuforiaTrackableDefaultListener)trackable.getListener();
-    }
-
-    // BELOW THIS LINE ARE METHODS THAT NEED TO BE DELETED OR MOVED
-
-    private OpenGLMatrix createLocationMatrix(
-            float x, float y, float z,
-            float xRot, float yRot, float zRot) {
-        return new OpenGLMatrix()
-                .translated(x, y, z)
-                .rotated(AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES,
-                        xRot, yRot, zRot);
-    }
-
-    // TODO test this? this is a mess...
-    private OpenGLMatrix averagePosition(List<OpenGLMatrix> positions) {
-        if (positions.size() == 1) return positions.get(0);
-        float Ex=0;
-        float Ey=0;
-        float Ez=0;
-        float ExRot=0;
-        float EyRot=0;
-        float EzRot=0;
-        float n = positions.size();
-        for (OpenGLMatrix position : positions) {
-            VectorF translation = position.getTranslation();
-            Orientation rotation = Orientation.getOrientation(position,
-                    AxesReference.EXTRINSIC, AxesOrder.XYZ,  AngleUnit.DEGREES);
-            Ex += translation.get(0);
-            Ey += translation.get(1);
-            Ez += translation.get(2);
-            ExRot += rotation.firstAngle;
-            EyRot += rotation.secondAngle;
-            EzRot += rotation.thirdAngle;
-        }
-
-        Ex /= n;
-        Ey /= n;
-        Ez /= n;
-        ExRot /= n;
-        EyRot /= n;
-        EzRot /= n;
-
-        return createLocationMatrix(Ex, Ey, Ez, ExRot, EyRot, EzRot);
-    }
-
-    /**
-     * Return a list of Trackables from their names
-     * @param names - list of names of Trackables
-     */
-    private List<VuforiaTrackable> generateTrackableList(List<String> names) {
-        List<VuforiaTrackable> list = new ArrayList<>();
-        for (String name : names) {
-            list.add(trackablesMap.get(name));
-        }
-        return list;
     }
 
 }
