@@ -18,6 +18,7 @@ public class VuforiaBuilder {
     private String vuforiaKey;
     private String vuforiaAssetName;
     private List<String> vuforiaTrackableNames;
+    private List<OpenGLMatrix> vuforiaTrackableLocations;
     private HardwareMap hardwareMap;
 
     public VuforiaBuilder(String vuforiaKey) {
@@ -51,6 +52,18 @@ public class VuforiaBuilder {
         return this;
     }
 
+    public VuforiaBuilder withVuforiaTrackableLocations(OpenGLMatrix ... vuforiaTrackableLocations) {
+        Collection<OpenGLMatrix> locationsCollection = Arrays.asList(vuforiaTrackableLocations);
+        this.vuforiaTrackableLocations = new ArrayList<>();
+        this.vuforiaTrackableLocations.addAll(locationsCollection);
+        return this;
+    }
+
+    public VuforiaBuilder withVuforiaTrackableLocations(List<OpenGLMatrix> vuforiaTrackableLocations) {
+        this.vuforiaTrackableLocations = vuforiaTrackableLocations;
+        return this;
+    }
+
     public VuforiaBuilder withCameraMonitoring(HardwareMap hardwareMap) {
         this.hardwareMap = hardwareMap;
         enableCameraMonitoring = true;
@@ -65,6 +78,7 @@ public class VuforiaBuilder {
                 this.vuforiaKey,
                 this.vuforiaAssetName,
                 this.vuforiaTrackableNames,
+                this.vuforiaTrackableLocations,
                 this.hardwareMap
         );
 

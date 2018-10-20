@@ -4,11 +4,6 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
-import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
-import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
@@ -16,8 +11,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 import org.firstinspires.ftc.teamcode.general.RobotComponent;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,76 +19,20 @@ public class Vuforia implements RobotComponent {
 
     // TODO Clean up this mess. SRP much? Loose coupling? Come on! You can do better than this!
 
-    public static class VuforiaBuilder {
-
-        private VuforiaLocalizer.CameraDirection cameraDirection;
-        private boolean enableCameraMonitoring = false;
-        private OpenGLMatrix cameraLocation;
-        private String vuforiaKey;
-        private String vuforiaAssetName;
-        private List<String> vuforiaTrackableNames;
-        private HardwareMap hardwareMap;
-
-        public VuforiaBuilder(String vuforiaKey) {
-            this.vuforiaKey = vuforiaKey;
-        }
-
-        public VuforiaBuilder withCameraDirection(VuforiaLocalizer.CameraDirection cameraDirection) {
-            this.cameraDirection = cameraDirection;
-            return this;
-        }
-
-        public VuforiaBuilder withCameraLocation(OpenGLMatrix cameraLocation) {
-            this.cameraLocation = cameraLocation;
-            return this;
-        }
-
-        public VuforiaBuilder withVuforiaAssetName(String vuforiaAssetName) {
-            this.vuforiaAssetName = vuforiaAssetName;
-            return this;
-        }
-
-        public VuforiaBuilder withVuforiaTrackableNames(String ... vuforiaTrackableNames) {
-            Collection<String> namesCollection = Arrays.asList(vuforiaTrackableNames);
-            this.vuforiaTrackableNames = new ArrayList<>();
-            this.vuforiaTrackableNames.addAll(namesCollection);
-            return this;
-        }
-
-        public VuforiaBuilder withVuforiaTrackableNames(List<String> vuforiaTrackableNames) {
-            this.vuforiaTrackableNames = vuforiaTrackableNames;
-            return this;
-        }
-
-        public VuforiaBuilder withCameraMonitoring(HardwareMap hardwareMap) {
-            this.hardwareMap = hardwareMap;
-            enableCameraMonitoring = true;
-            return this;
-        }
-
-        public Vuforia build() {
-            return new Vuforia(
-                    this.cameraDirection,
-                    this.enableCameraMonitoring,
-                    this.cameraLocation,
-                    this.vuforiaKey,
-                    this.vuforiaAssetName,
-                    this.vuforiaTrackableNames,
-                    this.hardwareMap
-            );
-
-        }
-    }
-
     private String vuforiaKey;
 
     private VuforiaLocalizer vuforiaLocalizer;
     private Map<String, VuforiaTrackable> trackablesMap;
     private VuforiaTrackables trackablesList;
+    private List<String> vuforiaTrackableNames;
+    private List<OpenGLMatrix> vuforiaTrackableLocations;
 
     private VuforiaLocalizer.CameraDirection cameraDirection;
     private OpenGLMatrix cameraLocation;
+    private boolean enableCameraMonitoring;
     private String vuforiaAssetName;
+
+    private HardwareMap hardwareMap;
 
     /**
      * Initializes new Vuforia instance.
@@ -117,53 +54,23 @@ public class Vuforia implements RobotComponent {
      *                              set, in order for the asset set
      * @param hardwareMap - the hardware map for the current op mode
      */
-    private Vuforia(VuforiaLocalizer.CameraDirection cameraDirection,
+    protected Vuforia(VuforiaLocalizer.CameraDirection cameraDirection,
                    boolean enableCameraMonitoring,
                    OpenGLMatrix cameraLocation,
                    String vuforiaKey,
                    String vuforiaAssetName,
                    List<String> vuforiaTrackableNames,
+                   List<OpenGLMatrix> vuforiaTrackableLocations,
                    HardwareMap hardwareMap) {
 
-        // TODO split into multiple methods. A LOT of this should be in init()
-        // should this constructor really take such an ungodly number of args??
-
         this.cameraDirection = cameraDirection;
+        this.enableCameraMonitoring = enableCameraMonitoring;
         this.cameraLocation = cameraLocation;
         this.vuforiaKey = vuforiaKey;
         this.vuforiaAssetName = vuforiaAssetName;
-
-        VuforiaLocalizer.Parameters parameters;
-        if(enableCameraMonitoring) {
-            parameters = new VuforiaLocalizer.Parameters(
-                    hardwareMap.appContext.getResources().getIdentifier(
-                            "cameraMonitorViewId",
-                            "id",
-                            hardwareMap.appContext.getPackageName())
-            );
-        } else {
-            parameters = new VuforiaLocalizer.Parameters();
-        }
-
-        parameters.vuforiaLicenseKey = vuforiaKey;
-        parameters.cameraDirection = cameraDirection;
-
-        vuforiaLocalizer = ClassFactory.getInstance().createVuforia(parameters);
-
-        trackablesList = vuforiaLocalizer.loadTrackablesFromAsset(vuforiaAssetName);
-
-        if (trackablesList.size() != vuforiaTrackableNames.size()) {
-            throw new RuntimeException(String.format(
-                    "Vuforia trackable names list is different size (%d) than Vuforia assets list" +
-                            "size (%d)", trackablesList.size(), vuforiaTrackableNames.size()));
-        }
-
-        trackablesMap = new HashMap<>();
-
-        for (int i=0; i<trackablesList.size(); i++) {
-            addTrackable(trackablesList.get(i), vuforiaTrackableNames.get(i), /* TODO add actual location matrix */ new OpenGLMatrix() /* BAD CODE */);
-        }
-
+        this.vuforiaTrackableNames = vuforiaTrackableNames;
+        this.vuforiaTrackableLocations = vuforiaTrackableLocations;
+        this.hardwareMap = hardwareMap;
     }
 
     /**
@@ -219,7 +126,23 @@ public class Vuforia implements RobotComponent {
 
     @Override
     public void init() {
-        // TODO all the init stuff
+        vuforiaLocalizer = ClassFactory.getInstance().createVuforia(makeParameters());
+
+        trackablesList = vuforiaLocalizer.loadTrackablesFromAsset(vuforiaAssetName);
+
+        if (trackablesList.size() != vuforiaTrackableNames.size()) {
+            throw new RuntimeException(String.format(
+                    "Vuforia trackable names list is different size (%d) than Vuforia assets list" +
+                            "size (%d)", trackablesList.size(), vuforiaTrackableNames.size()));
+        }
+
+        trackablesMap = new HashMap<>();
+
+        for (int i=0; i<trackablesList.size(); i++) {
+            addTrackable(trackablesList.get(i),
+                    vuforiaTrackableNames.get(i),
+                    vuforiaTrackableLocations.get(i));
+        }
     }
 
     @Override
@@ -233,6 +156,31 @@ public class Vuforia implements RobotComponent {
     @Override
     public void emergencyStop() {
         stop();
+    }
+
+    /**
+     * Makes Vuforia Parameters object with all necessary information from this class's instance
+     * variables
+     * @return - the Parameters object
+     */
+    private VuforiaLocalizer.Parameters makeParameters() {
+        VuforiaLocalizer.Parameters parameters;
+
+        if(enableCameraMonitoring) {
+            parameters = new VuforiaLocalizer.Parameters(
+                    hardwareMap.appContext.getResources().getIdentifier(
+                            "cameraMonitorViewId",
+                            "id",
+                            hardwareMap.appContext.getPackageName())
+            );
+        } else {
+            parameters = new VuforiaLocalizer.Parameters();
+        }
+
+        parameters.vuforiaLicenseKey = vuforiaKey;
+        parameters.cameraDirection = cameraDirection;
+
+        return parameters;
     }
 
     /**
