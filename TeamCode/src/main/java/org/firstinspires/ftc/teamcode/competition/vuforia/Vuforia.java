@@ -101,7 +101,6 @@ public class Vuforia implements RobotComponent {
      * @return - the robot's position, or null if no Trackables are visible
      */
     public OpenGLMatrix getRobotFieldPosition() {
-        // TODO test this!
         List<VuforiaTrackable> visibleTrackables = visibleTrackables();
         if (visibleTrackables.size() == 0) return null;
         List<OpenGLMatrix> positions = new ArrayList<>();
