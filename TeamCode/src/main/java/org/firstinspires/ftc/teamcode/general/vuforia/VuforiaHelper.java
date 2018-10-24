@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.competition.vuforia;
+package org.firstinspires.ftc.teamcode.general.vuforia;
 
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.matrices.VectorF;

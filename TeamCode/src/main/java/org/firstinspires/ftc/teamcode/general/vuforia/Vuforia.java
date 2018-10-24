@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.competition.vuforia;
+package org.firstinspires.ftc.teamcode.general.vuforia;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
