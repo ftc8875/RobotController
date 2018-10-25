@@ -20,7 +20,7 @@ public class TankDriveEncoders extends TankDriveDecorator {
         tankDrivePlain.driveTank(power, power);
     }
 
-    public void rotate(float degrees) {
+    public void rotate(float degrees, float power) {
         tankDrivePlain.setMotorModes(DcMotor.RunMode.RUN_TO_POSITION);
         // TODO finish this
     }
