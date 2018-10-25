@@ -4,12 +4,12 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.competition.hardware.TankDriveBuilder;
-import org.firstinspires.ftc.teamcode.competition.hardware.TankDrive;
+import org.firstinspires.ftc.teamcode.competition.hardware.TankDrivePlain;
 
 @TeleOp(name="Test Drive Train", group="Test")
 public class TestDriveTrain extends OpMode {
 
-    TankDrive tankDrive;
+    TankDrivePlain tankDrive;
 
     @Override
     public void init() {

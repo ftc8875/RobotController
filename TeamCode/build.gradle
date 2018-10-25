@@ -10,6 +10,9 @@
 
 
 // Custom definitions may go here
+repositories {
+    google()
+}
 
 // Include common definitions from above.
 apply from: '../build.common.gradle'

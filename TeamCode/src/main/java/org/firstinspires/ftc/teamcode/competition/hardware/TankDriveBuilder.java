@@ -7,10 +7,13 @@ import java.util.ArrayList;
 
 public class TankDriveBuilder {
 
-    protected HardwareMap hardwareMap;
+    private HardwareMap hardwareMap;
 
-    protected ArrayList<DcMotor> leftMotors = new ArrayList<>();
-    protected ArrayList<DcMotor> rightMotors = new ArrayList<>();
+    private ArrayList<DcMotor> leftMotors = new ArrayList<>();
+    private ArrayList<DcMotor> rightMotors = new ArrayList<>();
+    private boolean encoders = false;
+    private float encoderCountsPerInch;
+    private float turnDiameter;
 
     public TankDriveBuilder(HardwareMap hardwareMap) {
         this.hardwareMap = hardwareMap;
@@ -30,8 +33,19 @@ public class TankDriveBuilder {
         return this;
     }
 
+    public TankDriveBuilder withEncoders(float encoderCountsPerInch, float turnDiameter) {
+        encoders = true;
+        this.encoderCountsPerInch = encoderCountsPerInch;
+        this.turnDiameter = turnDiameter;
+        return this;
+    }
+
     public TankDrive build() {
-        return new TankDrive(this);
+        TankDrivePlain tankDrivePlain = new TankDrivePlain(this);
+        if (encoders) {
+            return new TankDriveEncoders(tankDrivePlain, encoderCountsPerInch, turnDiameter);
+        }
+        return tankDrivePlain;
     }
 
     protected ArrayList<DcMotor> getLeftMotors() {
