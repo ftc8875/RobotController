@@ -30,7 +30,7 @@ public class GenOneTeleOp extends OpMode {
 
         tankDrive.init();
 
-        robotLift = new RobotLift(liftMotor, liftServo, RobotLift.Mode.LIFT);
+        robotLift = new RobotLift(liftMotor, liftServo, RobotLift.Mode.LIFT, RobotLift.Position.EXTENDED);
         robotLift.init();
     }
 
@@ -45,10 +45,10 @@ public class GenOneTeleOp extends OpMode {
         float d = -gamepad1.left_stick_y;
         float t = gamepad1.right_stick_x;
 
-        boolean changeMode = gamepad2.right_bumper;
-        boolean extend = gamepad2.x;
-        boolean retract = gamepad2.y;
-        boolean freeze = gamepad2.b;
+        boolean changeMode = gamepad1.right_bumper;
+        boolean extend = gamepad1.x;
+        boolean retract = gamepad1.y;
+        boolean freeze = gamepad1.b;
 
         if (changeMode) {
             lastButton = "RIGHT BUMPER";

@@ -19,7 +19,7 @@ public class TestRobotLiftManual extends OpMode {
     public void init() {
         DcMotor liftMotor = hardwareMap.get(DcMotor.class, "liftMotor");
         Servo liftServo = hardwareMap.get(Servo.class, "liftServo");
-        robotLift = new RobotLift(liftMotor, liftServo, RobotLift.Mode.LIFT);
+        robotLift = new RobotLift(liftMotor, liftServo, RobotLift.Mode.LIFT, RobotLift.Position.RETRACTED );
     }
 
     @Override

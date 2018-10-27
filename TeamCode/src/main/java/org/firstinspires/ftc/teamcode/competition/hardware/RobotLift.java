@@ -8,9 +8,9 @@ import org.firstinspires.ftc.teamcode.general.RobotComponent;
 
 public class RobotLift implements RobotComponent {
 
-    private static final float COUNTS_PER_INCH = 384;
+    private static final float COUNTS_PER_INCH = 198;
 
-    private static final float EXTEND_INCHES = 3.1f;
+    private static final float EXTEND_INCHES = 4.44f;
     private static final float RETRACT_INCHES = 0.1f;
     private static final float OVERSHOOT_INCHES = EXTEND_INCHES + 0.25f;
 
@@ -33,10 +33,18 @@ public class RobotLift implements RobotComponent {
     private Servo releaser;
 
     private Mode mode;
+    private Position currentPosition;
+
+    private int initialPosition;
 
     public enum Mode {
         LIFT,
         LAND
+    }
+
+    public enum Position {
+        RETRACTED,
+        EXTENDED
     }
 
     /**
@@ -44,16 +52,28 @@ public class RobotLift implements RobotComponent {
      * @param liftMotor - the DcMotor that lifts the robot up
      * @param releaser - the Servo that opens and closes the clip
      */
-    public RobotLift(DcMotor liftMotor, Servo releaser, Mode mode) {
+    public RobotLift(DcMotor liftMotor, Servo releaser, Mode mode, Position initialPosition) {
         this.liftMotor = liftMotor;
         this.releaser = releaser;
         this.mode = mode;
+        switch (initialPosition) {
+            case RETRACTED:
+                this.initialPosition = RETRACT_ENCODER_POSITION;
+                break;
+            case EXTENDED:
+                this.initialPosition = EXTEND_ENCODER_POSITION;
+                break;
+        }
         init();
     }
 
     // DEBUG
     public float getMotorPositionInches() {
         return liftMotor.getCurrentPosition() / COUNTS_PER_INCH;
+    }
+
+    public boolean liftBusy() {
+        return liftMotor.isBusy();
     }
 
     public void setMode(Mode mode) {
@@ -67,7 +87,7 @@ public class RobotLift implements RobotComponent {
 
     private void extend(float power) {
         liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        liftMotor.setTargetPosition(EXTEND_ENCODER_POSITION);
+        liftMotor.setTargetPosition(EXTEND_ENCODER_POSITION - initialPosition);
         liftMotor.setPower(power);
         //while(liftMotor.isBusy()) {}
     }
@@ -85,7 +105,7 @@ public class RobotLift implements RobotComponent {
 
     private void retract(float power) {
         liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        liftMotor.setTargetPosition(RETRACT_ENCODER_POSITION);
+        liftMotor.setTargetPosition(RETRACT_ENCODER_POSITION - initialPosition);
         liftMotor.setPower(power);
         //while(liftMotor.isBusy()) {}
     }
@@ -111,7 +131,7 @@ public class RobotLift implements RobotComponent {
 
     public void overShoot() {
         liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        liftMotor.setTargetPosition(OVERSHOOT_ENCODER_POSITION);
+        liftMotor.setTargetPosition(OVERSHOOT_ENCODER_POSITION - initialPosition);
         liftMotor.setPower(OVERSHOOT_POWER);
         //while(liftMotor.isBusy()) {}
     }
@@ -139,6 +159,7 @@ public class RobotLift implements RobotComponent {
                 closeHook();
                 break;
         }
+
     }
 
     @Override

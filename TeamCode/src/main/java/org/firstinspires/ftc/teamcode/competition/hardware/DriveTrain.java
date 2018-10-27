@@ -17,4 +17,6 @@ public interface DriveTrain extends RobotComponent {
      */
     void drive(float power, float turn);
 
+    //boolean isBusy();
+
 }
