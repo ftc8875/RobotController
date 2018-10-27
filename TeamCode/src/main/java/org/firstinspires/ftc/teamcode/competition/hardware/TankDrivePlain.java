@@ -107,12 +107,12 @@ public class TankDrivePlain implements TankDrive {
     @Override
     public void init() {
         for(DcMotor motor : leftMotors) {
-            motor.setDirection(DcMotor.Direction.REVERSE);
+            motor.setDirection(DcMotor.Direction.FORWARD);
             initMotor(motor);
         }
 
         for(DcMotor motor : rightMotors) {
-            motor.setDirection(DcMotorSimple.Direction.FORWARD);
+            motor.setDirection(DcMotorSimple.Direction.REVERSE);
             initMotor(motor);
         }
     }

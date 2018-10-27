@@ -10,11 +10,13 @@ import org.firstinspires.ftc.teamcode.competition.hardware.RobotLift;
 import org.firstinspires.ftc.teamcode.competition.hardware.TankDrive;
 import org.firstinspires.ftc.teamcode.competition.hardware.TankDriveBuilder;
 
-@TeleOp(name = "Gen One", group = "competition")
+@TeleOp(name = "Gen One", group = "gen1")
 public class GenOneTeleOp extends OpMode {
 
     TankDrive tankDrive;
     RobotLift robotLift;
+
+    private String lastButton = "No button pressed yet...";
 
     @Override
     public void init() {
@@ -40,6 +42,43 @@ public class GenOneTeleOp extends OpMode {
 
     @Override
     public void loop() {
+        float d = -gamepad1.left_stick_y;
+        float t = gamepad1.right_stick_x;
+
+        boolean changeMode = gamepad2.right_bumper;
+        boolean extend = gamepad2.x;
+        boolean retract = gamepad2.y;
+        boolean freeze = gamepad2.b;
+
+        if (changeMode) {
+            lastButton = "RIGHT BUMPER";
+            if (robotLift.getMode() == RobotLift.Mode.LIFT) {
+                robotLift.setMode(RobotLift.Mode.LAND);
+            } else {
+                robotLift.setMode(RobotLift.Mode.LIFT);
+            }
+        }
+
+        if (extend) {
+            lastButton = "X";
+            robotLift.extend();
+        } else if (retract) {
+            lastButton = "Y";
+            robotLift.retract();
+        }
+
+        if (freeze) {
+            lastButton = "B";
+            robotLift.freeze();
+        }
+
+        tankDrive.drive(d, t);
+
+        telemetry.addData("Drive", "%.2f", d);
+        telemetry.addData("Turn ", "%.2f", t);
+        telemetry.addData("Mode", robotLift.getMode());
+        telemetry.addData("Position", "%.2f", robotLift.getMotorPositionInches());
+        telemetry.addData("Last Button", lastButton);
 
     }
 

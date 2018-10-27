@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.competition.quickTesting;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -7,6 +8,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.competition.hardware.RobotLift;
 
+@Disabled
 @TeleOp(name="Test Robot Lift w/ Controller", group="Test")
 public class TestRobotLiftManual extends OpMode {
 
