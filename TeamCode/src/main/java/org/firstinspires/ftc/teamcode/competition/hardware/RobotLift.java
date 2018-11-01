@@ -6,6 +6,10 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.general.RobotComponent;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Properties;
+
 public class RobotLift implements RobotComponent {
 
     private static final float COUNTS_PER_INCH = 198;
@@ -26,6 +30,9 @@ public class RobotLift implements RobotComponent {
     private static final float LAND_EXTEND_POWER = 0.5f;
     private static final float LAND_RETRACT_POWER = 0.95f;
     private static final float OVERSHOOT_POWER = 0.8f;
+
+    private static final float NUDGE_POWER = 0.5f;
+    private static final float NUDGE_INCHES = 0.1f;
 
     private static final DcMotor.Direction LIFT_MOTOR_DIRECTION = DcMotor.Direction.REVERSE;
 
@@ -127,6 +134,20 @@ public class RobotLift implements RobotComponent {
 
     public void closeHook() {
         releaser.setPosition(SERVO_CLOSE);
+    }
+
+    public void nudgeUp() {
+        liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        int counts = liftMotor.getCurrentPosition() + Math.round(NUDGE_INCHES * COUNTS_PER_INCH);
+        liftMotor.setTargetPosition(counts);
+        liftMotor.setPower(NUDGE_POWER);
+    }
+
+    public void nudgeDown() {
+        liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        int counts = liftMotor.getCurrentPosition() - Math.round(NUDGE_INCHES * COUNTS_PER_INCH);
+        liftMotor.setTargetPosition(counts);
+        liftMotor.setPower(NUDGE_POWER);
     }
 
     public void overShoot() {
