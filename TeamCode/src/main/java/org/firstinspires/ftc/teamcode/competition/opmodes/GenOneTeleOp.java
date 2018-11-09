@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.competition.hardware.RobotLift;
 import org.firstinspires.ftc.teamcode.competition.hardware.TankDrive;
 import org.firstinspires.ftc.teamcode.competition.hardware.TankDriveBuilder;
 
-@TeleOp(name = "Gen One", group = "gen1")
+@TeleOp(name = "Gen 1", group = "gen1")
 public class GenOneTeleOp extends OpMode {
 
     TankDrive tankDrive;

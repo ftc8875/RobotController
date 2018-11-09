@@ -1,10 +1,12 @@
 package org.firstinspires.ftc.teamcode.competition.quickTesting;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 
+@Disabled
 @Autonomous(name = "Test Color Sensor", group = "test")
 public class TestColorSensor extends OpMode {
 

@@ -1,10 +1,12 @@
 package org.firstinspires.ftc.teamcode.competition.quickTesting;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.general.dsopts.DriverStationOptions;
 
+@Disabled
 @TeleOp(name="Test DS Options", group = "test")
 public class TestDSOptions extends OpMode {
 

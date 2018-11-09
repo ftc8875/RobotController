@@ -1,11 +1,13 @@
 package org.firstinspires.ftc.teamcode.competition.quickTesting;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
+@Disabled
 @Autonomous(name = "Test Distance Sensor", group = "test")
 public class TestDistanceSensor extends OpMode {
 
