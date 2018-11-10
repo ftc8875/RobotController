@@ -37,7 +37,7 @@ public class GenTwoTeleOp extends OpMode {
         robotLift = new RobotLift(liftMotor, liftServo, RobotLift.Mode.LIFT, RobotLift.Position.EXTENDED);
         robotLift.init();
 
-        claw = new ServoClaw(clawServo, true, 0.2, 0.1);
+        claw = new ServoClaw(clawServo, true, 0.45, 0.15);
     }
 
     @Override

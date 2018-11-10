@@ -1,9 +1,11 @@
 package org.firstinspires.ftc.teamcode.general.testComponent;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
+@Disabled
 @Autonomous(name = "Test DC Motor", group = "test")
 public class TestDcMotor extends LinearOpMode {
 
