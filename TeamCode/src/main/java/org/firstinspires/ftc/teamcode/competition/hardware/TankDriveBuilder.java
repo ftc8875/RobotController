@@ -3,6 +3,8 @@ package org.firstinspires.ftc.teamcode.competition.hardware;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.teamcode.general.vuforia.Vuforia;
+
 import java.util.ArrayList;
 
 public class TankDriveBuilder {
@@ -14,6 +16,8 @@ public class TankDriveBuilder {
     private boolean encoders = false;
     private float encoderCountsPerInch;
     private float turnDiameter;
+    private boolean vuforia = false;
+    private Vuforia vuforiaInstance;
 
     public TankDriveBuilder(HardwareMap hardwareMap) {
         this.hardwareMap = hardwareMap;
@@ -40,10 +44,21 @@ public class TankDriveBuilder {
         return this;
     }
 
+    public TankDriveBuilder withVuforia(Vuforia vuforiaInstance) {
+        this.vuforia = true;
+        this.vuforiaInstance = vuforiaInstance;
+        return this;
+    }
+
     public TankDrive build() {
         TankDrivePlain tankDrivePlain = new TankDrivePlain(this);
         if (encoders) {
+            if (vuforia) {
+                return new TankDriveVuforia(tankDrivePlain, encoderCountsPerInch, turnDiameter, vuforiaInstance);
+            }
             return new TankDriveEncoders(tankDrivePlain, encoderCountsPerInch, turnDiameter);
+        } else if (vuforia) {
+            throw new NoEncodersException();
         }
         return tankDrivePlain;
     }

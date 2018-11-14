@@ -51,7 +51,7 @@ public class TestVuforia extends OpMode {
         if (visibleTrackables.size() > 0) {
             OpenGLMatrix pos = vuforia.getRobotPositionFromTrackable(visibleTrackables.get(0));
             if (pos != null) {
-                telemetry.addLine(pos.toString());
+                telemetry.addLine(pos.formatAsTransform());
             } else {
                 telemetry.addLine("MATRIX IS NULL!!!!!!!");
             }

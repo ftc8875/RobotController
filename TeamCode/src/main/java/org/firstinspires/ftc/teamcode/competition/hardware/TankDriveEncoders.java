@@ -7,7 +7,7 @@ public class TankDriveEncoders extends TankDriveDecorator {
     private float encoderCountsPerInch;
     private float turnDiameter;
 
-    public TankDriveEncoders(TankDrivePlain tankDrive, float encoderCountsPerInch, float turnDiameter) {
+    TankDriveEncoders(TankDrivePlain tankDrive, float encoderCountsPerInch, float turnDiameter) {
         super(tankDrive);
         this.encoderCountsPerInch = encoderCountsPerInch;
         this.turnDiameter = turnDiameter;

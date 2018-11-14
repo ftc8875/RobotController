@@ -32,6 +32,8 @@ public class Vuforia implements RobotComponent {
     private boolean enableCameraMonitoring;
     private String vuforiaAssetName;
 
+    private Map<String, OpenGLMatrix> lastNonNullLocations = new HashMap();
+
     private HardwareMap hardwareMap;
 
     /**
@@ -118,10 +120,25 @@ public class Vuforia implements RobotComponent {
     public OpenGLMatrix getRobotPositionFromTrackable(String trackableName) {
         VuforiaTrackable trackable = trackablesMap.get(trackableName);
         VuforiaTrackableDefaultListener listener = getTrackableListener(trackable);
-        return listener.getUpdatedRobotLocation();
-
+        OpenGLMatrix updatedLocation = listener.getUpdatedRobotLocation();
+        if (!isVisible(trackableName)) {
+            return null;
+        }
+        return updatePositionFromTrackable(trackableName, updatedLocation);
     }
 
+    /**
+     * Updates the position stored in lastNonNullLocations and returns the updated position if the
+     * matrix is not null. If the matrix is null, returns the last non null location for the trackable.
+     * @param trackableName
+     * @param position
+     */
+    private OpenGLMatrix updatePositionFromTrackable(String trackableName, OpenGLMatrix position) {
+        if (position != null) {
+            lastNonNullLocations.put(trackableName, position);
+        }
+        return lastNonNullLocations.get(trackableName);
+    }
 
     @Override
     public void init() {
