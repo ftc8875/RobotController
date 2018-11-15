@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.competition.quickTesting;
 
+import com.qualcomm.ftccommon.SoundPlayer;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
@@ -10,6 +11,9 @@ public class TestOopsieWoopsie extends LinearOpMode {
     private static final int width = Math.min(oops.length(), 40);
 
     public void runOpMode() {
+        int soundID = hardwareMap.appContext.getResources().getIdentifier("speech", "raw", hardwareMap.appContext.getPackageName());
+        SoundPlayer.getInstance().preload(hardwareMap.appContext, soundID);
+
         telemetry.addLine("Initialized!");
         telemetry.update();
         waitForStart();
@@ -22,6 +26,7 @@ public class TestOopsieWoopsie extends LinearOpMode {
             sleep(300);
         }*/
         for (int i=oops.length(); i>=0; i--) {
+            SoundPlayer.getInstance().startPlaying(hardwareMap.appContext, soundID);
             int l = width - i;
             l = l<0 ? 0 : l;
             String t = oops.substring(i, oops.length()) + new String(new char[l]).replace('\0', ' ');
