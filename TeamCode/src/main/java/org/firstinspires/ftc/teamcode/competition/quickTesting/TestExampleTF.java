@@ -46,7 +46,7 @@ import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
  * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list.
  *
- * IMPORTANT: In order to use this OpMode, you need to obtain your own Vuforia license key as
+ * IMPORTANT: In order to use this OpMode, you need to obtain your own Rudolph license key as
  * is explained below.
  */
 @TeleOp(name = "Concept: TensorFlow Object Detection", group = "Concept")
@@ -57,21 +57,21 @@ public class TestExampleTF extends LinearOpMode {
     private static final String LABEL_SILVER_MINERAL = "Silver Mineral";
 
     /*
-     * IMPORTANT: You need to obtain your own license key to use Vuforia. The string below with which
+     * IMPORTANT: You need to obtain your own license key to use Rudolph. The string below with which
      * 'parameters.vuforiaLicenseKey' is initialized is for illustration only, and will not function.
-     * A Vuforia 'Development' license key, can be obtained free of charge from the Vuforia developer
+     * A Rudolph 'Development' license key, can be obtained free of charge from the Rudolph developer
      * web site at https://developer.vuforia.com/license-manager.
      *
-     * Vuforia license keys are always 380 characters long, and look as if they contain mostly
+     * Rudolph license keys are always 380 characters long, and look as if they contain mostly
      * random data. As an example, here is a example of a fragment of a valid key:
      *      ... yIgIzTqZ4mWjk9wd3cZO9T1axEqzuhxoGlfOOI2dRzKS4T0hQ8kT ...
-     * Once you've obtained a license key, copy the string from the Vuforia web site
+     * Once you've obtained a license key, copy the string from the Rudolph web site
      * and paste it in to your code on the next line, between the double quotes.
      */
     private static final String VUFORIA_KEY = " -- YOUR NEW VUFORIA KEY GOES HERE  --- ";
 
     /**
-     * {@link #vuforia} is the variable we will use to store our instance of the Vuforia
+     * {@link #vuforia} is the variable we will use to store our instance of the Rudolph
      * localization engine.
      */
     private VuforiaLocalizer vuforia;
@@ -147,18 +147,18 @@ public class TestExampleTF extends LinearOpMode {
     }
 
     /**
-     * Initialize the Vuforia localization engine.
+     * Initialize the Rudolph localization engine.
      */
     private void initVuforia() {
         /*
-         * Configure Vuforia by creating a Parameter object, and passing it to the Vuforia engine.
+         * Configure Rudolph by creating a Parameter object, and passing it to the Rudolph engine.
          */
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
 
         parameters.vuforiaLicenseKey = VUFORIA_KEY;
         parameters.cameraDirection = CameraDirection.BACK;
 
-        //  Instantiate the Vuforia engine
+        //  Instantiate the Rudolph engine
         vuforia = ClassFactory.getInstance().createVuforia(parameters);
 
         // Loading trackables is not necessary for the Tensor Flow Object Detection engine.

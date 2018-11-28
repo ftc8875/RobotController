@@ -1,17 +1,17 @@
 package org.firstinspires.ftc.teamcode.competition.hardware;
 
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
-import org.firstinspires.ftc.teamcode.general.vuforia.Vuforia;
+import org.firstinspires.ftc.teamcode.santaclaus.hooves.Rudolph;
 
 public class TankDriveVuforia extends TankDriveEncoders {
 
-    private Vuforia vuforia;
+    private Rudolph rudolph;
     private TankDrivePlain tankDrivePlain;
 
-    TankDriveVuforia(TankDrivePlain tankDrivePlain, float encoderCountsPerInch, float turnDiameter, Vuforia vuforiaInstance) {
+    TankDriveVuforia(TankDrivePlain tankDrivePlain, float encoderCountsPerInch, float turnDiameter, Rudolph rudolphInstance) {
         super(tankDrivePlain, encoderCountsPerInch, turnDiameter);
         this.tankDrivePlain = tankDrivePlain;
-        this.vuforia = vuforiaInstance;
+        this.rudolph = rudolphInstance;
     }
 
     public void driveToPosition(OpenGLMatrix position) {
@@ -20,25 +20,25 @@ public class TankDriveVuforia extends TankDriveEncoders {
 
     @Override
     public void init() {
-        this.vuforia.init();
+        this.rudolph.init();
         super.init();
     }
 
     @Override
     public void start() {
-        this.vuforia.start();
+        this.rudolph.start();
         super.start();
     }
 
     @Override
     public void stop() {
-        this.vuforia.stop();
+        this.rudolph.stop();
         super.stop();
     }
 
     @Override
     public void emergencyStop() {
-        this.vuforia.emergencyStop();
+        this.rudolph.emergencyStop();
         super.stop();
     }
 }

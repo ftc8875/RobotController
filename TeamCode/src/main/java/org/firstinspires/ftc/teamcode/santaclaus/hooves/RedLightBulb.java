@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.general.vuforia;
+package org.firstinspires.ftc.teamcode.santaclaus.hooves;
 
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
@@ -9,9 +9,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 import java.util.List;
 
-public class VuforiaHelper {
+public class RedLightBulb {
 
-    private VuforiaHelper() {}
+    private RedLightBulb() {}
 
     /**
      * Creates a location matrix from position and rotation values. Uses degrees and XYZ axis order

@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.competition.hardware;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import org.firstinspires.ftc.teamcode.general.vuforia.Vuforia;
+import org.firstinspires.ftc.teamcode.santaclaus.hooves.Rudolph;
 
 import java.util.ArrayList;
 
@@ -17,7 +17,7 @@ public class TankDriveBuilder {
     private float encoderCountsPerInch;
     private float turnDiameter;
     private boolean vuforia = false;
-    private Vuforia vuforiaInstance;
+    private Rudolph rudolphInstance;
 
     public TankDriveBuilder(HardwareMap hardwareMap) {
         this.hardwareMap = hardwareMap;
@@ -44,9 +44,9 @@ public class TankDriveBuilder {
         return this;
     }
 
-    public TankDriveBuilder withVuforia(Vuforia vuforiaInstance) {
+    public TankDriveBuilder withVuforia(Rudolph rudolphInstance) {
         this.vuforia = true;
-        this.vuforiaInstance = vuforiaInstance;
+        this.rudolphInstance = rudolphInstance;
         return this;
     }
 
@@ -54,7 +54,7 @@ public class TankDriveBuilder {
         TankDrivePlain tankDrivePlain = new TankDrivePlain(this);
         if (encoders) {
             if (vuforia) {
-                return new TankDriveVuforia(tankDrivePlain, encoderCountsPerInch, turnDiameter, vuforiaInstance);
+                return new TankDriveVuforia(tankDrivePlain, encoderCountsPerInch, turnDiameter, rudolphInstance);
             }
             return new TankDriveEncoders(tankDrivePlain, encoderCountsPerInch, turnDiameter);
         } else if (vuforia) {
