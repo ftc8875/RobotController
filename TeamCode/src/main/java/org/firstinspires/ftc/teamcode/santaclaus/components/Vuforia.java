@@ -255,4 +255,7 @@ public class Vuforia {
         return (VuforiaTrackableDefaultListener)trackable.getListener();
     }
 
+    public VuforiaLocalizer getVuforiaLocalizer() {
+        return this.vuforiaLocalizer;
+    }
 }
