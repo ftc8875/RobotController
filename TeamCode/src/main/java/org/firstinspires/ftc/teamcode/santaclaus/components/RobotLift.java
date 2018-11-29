@@ -1,8 +1,8 @@
-package org.firstinspires.ftc.teamcode.santaclaus.hooves;
+package org.firstinspires.ftc.teamcode.santaclaus.components;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-public class SleighLift {
+public class RobotLift {
 
     private static final double MOTOR_POWER = 0.5;
 
@@ -17,7 +17,7 @@ public class SleighLift {
 
     private DcMotor liftMotor;
 
-    public SleighLift(DcMotor liftMotor) {
+    public RobotLift(DcMotor liftMotor) {
         this.liftMotor = liftMotor;
         liftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);

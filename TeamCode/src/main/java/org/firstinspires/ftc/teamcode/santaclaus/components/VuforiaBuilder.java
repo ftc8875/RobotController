@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.santaclaus.hooves;
+package org.firstinspires.ftc.teamcode.santaclaus.components;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
@@ -10,7 +10,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-public class RudolphMother {
+public class VuforiaBuilder {
 
     private VuforiaLocalizer.CameraDirection cameraDirection;
     private boolean enableCameraMonitoring = false;
@@ -21,57 +21,57 @@ public class RudolphMother {
     private List<OpenGLMatrix> vuforiaTrackableLocations;
     private HardwareMap hardwareMap;
 
-    public RudolphMother(String vuforiaKey) {
+    public VuforiaBuilder(String vuforiaKey) {
         this.vuforiaKey = vuforiaKey;
     }
 
-    public RudolphMother withCameraDirection(VuforiaLocalizer.CameraDirection cameraDirection) {
+    public VuforiaBuilder withCameraDirection(VuforiaLocalizer.CameraDirection cameraDirection) {
         this.cameraDirection = cameraDirection;
         return this;
     }
 
-    public RudolphMother withCameraLocation(OpenGLMatrix cameraLocation) {
+    public VuforiaBuilder withCameraLocation(OpenGLMatrix cameraLocation) {
         this.cameraLocation = cameraLocation;
         return this;
     }
 
-    public RudolphMother withVuforiaAssetName(String vuforiaAssetName) {
+    public VuforiaBuilder withVuforiaAssetName(String vuforiaAssetName) {
         this.vuforiaAssetName = vuforiaAssetName;
         return this;
     }
 
-    public RudolphMother withVuforiaTrackableNames(String ... vuforiaTrackableNames) {
+    public VuforiaBuilder withVuforiaTrackableNames(String ... vuforiaTrackableNames) {
         Collection<String> namesCollection = Arrays.asList(vuforiaTrackableNames);
         this.vuforiaTrackableNames = new ArrayList<>();
         this.vuforiaTrackableNames.addAll(namesCollection);
         return this;
     }
 
-    public RudolphMother withVuforiaTrackableNames(List<String> vuforiaTrackableNames) {
+    public VuforiaBuilder withVuforiaTrackableNames(List<String> vuforiaTrackableNames) {
         this.vuforiaTrackableNames = vuforiaTrackableNames;
         return this;
     }
 
-    public RudolphMother withVuforiaTrackableLocations(OpenGLMatrix ... vuforiaTrackableLocations) {
+    public VuforiaBuilder withVuforiaTrackableLocations(OpenGLMatrix ... vuforiaTrackableLocations) {
         Collection<OpenGLMatrix> locationsCollection = Arrays.asList(vuforiaTrackableLocations);
         this.vuforiaTrackableLocations = new ArrayList<>();
         this.vuforiaTrackableLocations.addAll(locationsCollection);
         return this;
     }
 
-    public RudolphMother withVuforiaTrackableLocations(List<OpenGLMatrix> vuforiaTrackableLocations) {
+    public VuforiaBuilder withVuforiaTrackableLocations(List<OpenGLMatrix> vuforiaTrackableLocations) {
         this.vuforiaTrackableLocations = vuforiaTrackableLocations;
         return this;
     }
 
-    public RudolphMother withCameraMonitoring(HardwareMap hardwareMap) {
+    public VuforiaBuilder withCameraMonitoring(HardwareMap hardwareMap) {
         this.hardwareMap = hardwareMap;
         enableCameraMonitoring = true;
         return this;
     }
 
-    public Rudolph build() {
-        return new Rudolph(
+    public Vuforia build() {
+        return new Vuforia(
                 this.cameraDirection,
                 this.enableCameraMonitoring,
                 this.cameraLocation,

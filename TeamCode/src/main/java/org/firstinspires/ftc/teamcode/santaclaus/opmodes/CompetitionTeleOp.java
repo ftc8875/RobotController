@@ -1,20 +1,20 @@
-package org.firstinspires.ftc.teamcode.santaclaus.reindeer;
+package org.firstinspires.ftc.teamcode.santaclaus.opmodes;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.teamcode.santaclaus.hooves.SleighLift;
-import org.firstinspires.ftc.teamcode.santaclaus.hooves.Sleigh;
-import org.firstinspires.ftc.teamcode.santaclaus.hooves.Mouth;
+import org.firstinspires.ftc.teamcode.santaclaus.components.Drivetrain;
+import org.firstinspires.ftc.teamcode.santaclaus.components.RobotLift;
+import org.firstinspires.ftc.teamcode.santaclaus.components.Grabber;
 
 @TeleOp(name = "Gen 3", group = "bigpackage")
-public class ChristmasDay extends OpMode {
+public class CompetitionTeleOp extends OpMode {
 
-    Sleigh sleigh;
-    SleighLift sleighLift;
-    Mouth mouth;
+    Drivetrain drivetrain;
+    RobotLift robotLift;
+    Grabber grabber;
 
     @Override
     public void init() {
@@ -22,9 +22,9 @@ public class ChristmasDay extends OpMode {
         DcMotor rightMotor = hardwareMap.get(DcMotor.class, "r");
         DcMotor liftMotor = hardwareMap.get(DcMotor.class, "lift");
         Servo grabServo = hardwareMap.get(Servo.class, "grab");
-        sleigh = new Sleigh(leftMotor, rightMotor);
-        sleighLift = new SleighLift(liftMotor);
-        mouth = new Mouth(grabServo);
+        drivetrain = new Drivetrain(leftMotor, rightMotor);
+        robotLift = new RobotLift(liftMotor);
+        grabber = new Grabber(grabServo);
     }
 
     @Override
@@ -36,18 +36,18 @@ public class ChristmasDay extends OpMode {
         boolean grab = gamepad2.right_bumper;
         boolean release = gamepad2.left_bumper;
 
-        sleigh.driveSteer(drivePower, steerPower);
+        drivetrain.driveSteer(drivePower, steerPower);
 
         if (extendLift) {
-            sleighLift.extend();
+            robotLift.extend();
         } else if (retractLift) {
-            sleighLift.retract();
+            robotLift.retract();
         }
 
         if (grab) {
-            mouth.grab();
+            grabber.grab();
         } else if (release) {
-            mouth.release();
+            grabber.release();
         }
 
         telemetry.addData("Drive", drivePower);

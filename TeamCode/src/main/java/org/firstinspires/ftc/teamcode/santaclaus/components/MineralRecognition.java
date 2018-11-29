@@ -1,8 +1,8 @@
-package org.firstinspires.ftc.teamcode.santaclaus.hooves;
+package org.firstinspires.ftc.teamcode.santaclaus.components;
 
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 
-public class PresentIdentification {
+public class MineralRecognition {
 
     private VuforiaLocalizer vuforia;
 
@@ -10,7 +10,7 @@ public class PresentIdentification {
         GOLD, SILVER, UNKNOWN
     }
 
-    public PresentIdentification(VuforiaLocalizer vuforia) {
+    public MineralRecognition(VuforiaLocalizer vuforia) {
         this.vuforia = vuforia;
     }
 

@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.santaclaus.hooves;
+package org.firstinspires.ftc.teamcode.santaclaus.components;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Rudolph implements RobotComponent {
+public class Vuforia {
 
     // TODO Clean up this mess. SRP much? Loose coupling? Come on! You can do better than this!
 
@@ -37,7 +37,7 @@ public class Rudolph implements RobotComponent {
     private HardwareMap hardwareMap;
 
     /**
-     * Initializes new Rudolph instance.
+     * Initializes new Vuforia instance.
      * @param cameraDirection - Which phone camera to use. FRONT is the camera on the screen.
      *                        BACK is the camera on the other side. BACK is usually a higher
      *                        resolution than FRONT.
@@ -49,14 +49,14 @@ public class Rudolph implements RobotComponent {
      *                       * X: +ve in the forward direction of the robot
      *                       * Y: +ve to the left of the robot
      *                       * Z: +ve upwards of the robot
-     * @param vuforiaKey - the unique key generated on Rudolph's website
+     * @param vuforiaKey - the unique key generated on Vuforia's website
      * @param vuforiaAssetName - the name of the asset set for the current season's VuMarks.
      *                         Example: "RoverRuckus"
      * @param vuforiaTrackableNames - a list of the names to assign to each trackable in the asset
      *                              set, in order for the asset set
      * @param hardwareMap - the hardware map for the current op mode
      */
-    protected Rudolph(VuforiaLocalizer.CameraDirection cameraDirection,
+    protected Vuforia(VuforiaLocalizer.CameraDirection cameraDirection,
                       boolean enableCameraMonitoring,
                       OpenGLMatrix cameraLocation,
                       String vuforiaKey,
@@ -76,8 +76,8 @@ public class Rudolph implements RobotComponent {
     }
 
     /**
-     * Returns whether a given Rudolph Trackable (eg VuMark) is visible
-     * @param trackableName - the name of the Trackable (assigned when building the Rudolph object)
+     * Returns whether a given Vuforia Trackable (eg VuMark) is visible
+     * @param trackableName - the name of the Trackable (assigned when building the Vuforia object)
      */
     public boolean isVisible(String trackableName) {
         VuforiaTrackable trackable = trackablesMap.get(trackableName);
@@ -86,7 +86,7 @@ public class Rudolph implements RobotComponent {
     }
 
     /**
-     * Returns a list of all the names of the Rudolph Trackables (eg VuMarks) that are visible
+     * Returns a list of all the names of the Vuforia Trackables (eg VuMarks) that are visible
      */
     public List<String> getVisibleTrackableNames() {
         List<String> names = new ArrayList<>();
@@ -98,7 +98,7 @@ public class Rudolph implements RobotComponent {
     }
 
     /**
-     * Returns the robot's current position on the field, as an OpenGLMatrix., using the Rudolph
+     * Returns the robot's current position on the field, as an OpenGLMatrix., using the Vuforia
      * Trackables (eg VuMarks) that are currently visible.
      * @return - the robot's position, or null if no Trackables are visible
      */
@@ -109,12 +109,12 @@ public class Rudolph implements RobotComponent {
         for (VuforiaTrackable trackable : visibleTrackables) {
             positions.add(getRobotPositionFromTrackable(trackable.getName()));
         }
-        return RedLightBulb.averagePosition(positions);
+        return VuforiaHelper.averagePosition(positions);
     }
 
     /**
      * Returns the robot's current position on the field, considering only one Trackable.
-     * @param trackableName - the name of the Trackable (assigned when building the Rudolph object)
+     * @param trackableName - the name of the Trackable (assigned when building the Vuforia object)
      * @return
      */
     public OpenGLMatrix getRobotPositionFromTrackable(String trackableName) {
@@ -140,28 +140,24 @@ public class Rudolph implements RobotComponent {
         return lastNonNullLocations.get(trackableName);
     }
 
-    @Override
     public void init() {
         initVuforiaLocalizer();
         initTrackablesList();
         initAllTrackables();
     }
 
-    @Override
     public void start() {
         trackablesList.activate();
     }
 
-    @Override
     public void stop() {}
 
-    @Override
     public void emergencyStop() {
         stop();
     }
 
     /**
-     * Makes Rudolph Parameters object with all necessary information from this class's instance
+     * Makes Vuforia Parameters object with all necessary information from this class's instance
      * variables
      * @return - the Parameters object
      */
@@ -194,7 +190,7 @@ public class Rudolph implements RobotComponent {
 
         if (trackablesList.size() != vuforiaTrackableNames.size()) {
             throw new RuntimeException(String.format(
-                    "Rudolph trackable names list is different size (%d) than Rudolph assets list" +
+                    "Vuforia trackable names list is different size (%d) than Vuforia assets list" +
                             "size (%d)", trackablesList.size(), vuforiaTrackableNames.size()));
         }
     }

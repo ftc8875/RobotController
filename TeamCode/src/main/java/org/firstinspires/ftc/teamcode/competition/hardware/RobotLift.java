@@ -55,7 +55,7 @@ public class RobotLift implements RobotComponent {
     }
 
     /**
-     * Initialize a SleighLift.
+     * Initialize a RobotLift.
      * @param liftMotor - the DcMotor that lifts the robot up
      * @param releaser - the Servo that opens and closes the clip
      */

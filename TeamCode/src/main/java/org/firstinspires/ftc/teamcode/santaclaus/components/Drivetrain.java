@@ -1,9 +1,9 @@
-package org.firstinspires.ftc.teamcode.santaclaus.hooves;
+package org.firstinspires.ftc.teamcode.santaclaus.components;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.Range;
 
-public class Sleigh {
+public class Drivetrain {
 
     private static final double WHEEL_DIAMETER_INCHES = 3.25;
     private static final double ENCODER_COUNTS_PER_REV = 2240;
@@ -16,7 +16,7 @@ public class Sleigh {
     private DcMotor leftMotor;
     private DcMotor rightMotor;
 
-    public Sleigh(DcMotor leftMotor, DcMotor rightMotor) {
+    public Drivetrain(DcMotor leftMotor, DcMotor rightMotor) {
         this.leftMotor = leftMotor;
         this.rightMotor = rightMotor;
         leftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
