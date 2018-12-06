@@ -21,9 +21,7 @@ public class MineralRecognition {
     private TFObjectDetector tfod;
     private HardwareMap hardwareMap;
 
-    public enum MineralType {
-        GOLD, SILVER
-    }
+    private List<Recognition> lastRecognitions = new ArrayList<>();
 
     public MineralRecognition(VuforiaLocalizer vuforia, HardwareMap hardwareMap) {
         this.vuforia = vuforia;
@@ -35,20 +33,29 @@ public class MineralRecognition {
         tfod.activate();
     }
 
-    public List<MineralType> recognize() {
+    public List<Recognition> getLastRecognitions() {
+        return lastRecognitions;
+    }
+
+    public List<String> recognize() {
+        updateRecognitions();
+        return recognitionsToStrings(lastRecognitions);
+    }
+
+    private List<Recognition> updateRecognitions() {
         List<Recognition> recognitions = tfod.getUpdatedRecognitions();
-        List<MineralType> minerals = new ArrayList<>();
-        if (recognitions == null) {
-            return minerals;
+        if (recognitions != null) {
+            lastRecognitions = recognitions;
         }
-        for (Recognition recognition : recognitions) {
-            if (recognition.getLabel().equals(LABEL_GOLD_MINERAL)) {
-                minerals.add(MineralType.GOLD);
-            } else if (recognition.getLabel().equals(LABEL_SILVER_MINERAL)) {
-                minerals.add(MineralType.SILVER);
-            }
+        return recognitions;
+    }
+
+    private List<String> recognitionsToStrings(List<Recognition> recognitions) {
+        List<String> strings = new ArrayList<>();
+        for (Recognition r : recognitions) {
+            strings.add(r.getLabel());
         }
-        return minerals;
+        return strings;
     }
 
     private void initTfod() {

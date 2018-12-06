@@ -75,6 +75,10 @@ public class Drivetrain {
         rightMotor.setPower(ENCODER_POWER);
     }
 
+    public boolean isBusy() {
+        return leftMotor.isBusy() || rightMotor.isBusy();
+    }
+
     private void setMotorModes(DcMotor.RunMode mode) {
         leftMotor.setMode(mode);
         rightMotor.setMode(mode);
