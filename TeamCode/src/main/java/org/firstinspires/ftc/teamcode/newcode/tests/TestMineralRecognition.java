@@ -1,18 +1,19 @@
-package org.firstinspires.ftc.teamcode.santaclaus.tests;
+package org.firstinspires.ftc.teamcode.newcode.tests;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
-import org.firstinspires.ftc.teamcode.santaclaus.components.MineralRecognition;
+import org.firstinspires.ftc.teamcode.newcode.components.MineralRecognition;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 
 import java.util.List;
 
 import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection.BACK;
 
-@TeleOp(name="test mineral recognition",group="test")
+@TeleOp(name="Test Mineral Recognition",group="test")
 public class TestMineralRecognition extends OpMode {
 
     MineralRecognition mineralRecognition;
@@ -47,9 +48,9 @@ public class TestMineralRecognition extends OpMode {
         }
 
         for (int i = 0; i < minerals.size(); i++) {
-             String mineral = minerals.get(i);
+            String mineral = minerals.get(i);
             Recognition r = recognitions.get(i);
-            telemetry.addData(mineral, (int) r.getLeft());
+            telemetry.addData(mineral, String.format("%.3f, %.3f", r.getRight() / r.getImageWidth(), r.getTop() / r.getImageHeight()));
         }
         telemetry.update();
     }

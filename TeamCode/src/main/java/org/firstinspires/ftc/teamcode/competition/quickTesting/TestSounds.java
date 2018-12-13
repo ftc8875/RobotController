@@ -40,6 +40,7 @@ import java.io.File;
  *
  */
 
+@Disabled
 @TeleOp(name="Test Sounds", group="test")
 public class TestSounds extends LinearOpMode {
 

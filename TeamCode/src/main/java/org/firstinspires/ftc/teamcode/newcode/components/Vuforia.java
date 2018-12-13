@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.santaclaus.components;
+package org.firstinspires.ftc.teamcode.newcode.components;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
@@ -8,7 +8,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
-import org.firstinspires.ftc.teamcode.general.RobotComponent;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -1,15 +1,15 @@
-package org.firstinspires.ftc.teamcode.santaclaus.opmodes;
+package org.firstinspires.ftc.teamcode.newcode.opmodes;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.teamcode.santaclaus.components.Drivetrain;
-import org.firstinspires.ftc.teamcode.santaclaus.components.RobotLift;
-import org.firstinspires.ftc.teamcode.santaclaus.components.Grabber;
+import org.firstinspires.ftc.teamcode.newcode.components.Drivetrain;
+import org.firstinspires.ftc.teamcode.newcode.components.RobotLift;
+import org.firstinspires.ftc.teamcode.newcode.components.Grabber;
 
-@TeleOp(name = "Gen 3", group = "bigpackage")
+@TeleOp(name = "Gen 3", group = "competition")
 public class CompetitionTeleOp extends OpMode {
 
     Drivetrain drivetrain;
@@ -29,12 +29,15 @@ public class CompetitionTeleOp extends OpMode {
 
     @Override
     public void loop() {
-        double drivePower = -gamepad1.left_stick_y;
-        double steerPower = gamepad1.right_stick_x;
+        double drivePower = Math.pow(-gamepad1.left_stick_y, 3);
+        double steerPower = Math.pow(gamepad1.right_stick_x, 3);
         boolean extendLift = gamepad2.x;
         boolean retractLift = gamepad2.a;
         boolean grab = gamepad2.right_bumper;
         boolean release = gamepad2.left_bumper;
+        boolean stop = gamepad2.b;
+        boolean bumpUp = gamepad2.dpad_up;
+        boolean bumpDown = gamepad2.dpad_down;
 
         drivetrain.driveSteer(drivePower, steerPower);
 
@@ -42,6 +45,14 @@ public class CompetitionTeleOp extends OpMode {
             robotLift.extend();
         } else if (retractLift) {
             robotLift.retract();
+        } else if (bumpUp) {
+            robotLift.bumpUp();
+        } else if (bumpDown) {
+            robotLift.bumpDown();
+        }
+
+        if (stop) {
+            robotLift.stop();
         }
 
         if (grab) {

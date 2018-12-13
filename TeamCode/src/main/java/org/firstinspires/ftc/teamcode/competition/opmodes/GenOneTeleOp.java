@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.competition.opmodes;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -10,6 +11,7 @@ import org.firstinspires.ftc.teamcode.competition.hardware.RobotLift;
 import org.firstinspires.ftc.teamcode.competition.hardware.TankDrive;
 import org.firstinspires.ftc.teamcode.competition.hardware.TankDriveBuilder;
 
+@Disabled
 @TeleOp(name = "Gen 1", group = "gen1")
 public class GenOneTeleOp extends OpMode {
 

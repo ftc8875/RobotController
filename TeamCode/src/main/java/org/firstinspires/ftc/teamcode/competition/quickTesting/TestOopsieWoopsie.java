@@ -2,8 +2,10 @@ package org.firstinspires.ftc.teamcode.competition.quickTesting;
 
 import com.qualcomm.ftccommon.SoundPlayer;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
+@Disabled
 @Autonomous(name="Definitely Official Autonomous", group="test")
 public class TestOopsieWoopsie extends LinearOpMode {
 

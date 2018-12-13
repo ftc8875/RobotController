@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AppThemeTealRC" parent="AppTheme.Teal">
+        <item name="android:colorPrimary">@color/bright_red</item>
+        <item name="android:colorAccent">@color/very_dark_green</item>
+        <item name="android:colorBackground">@color/bright_red</item>
+    </style>
+</resources>

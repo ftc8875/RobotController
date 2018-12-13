@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.competition.opmodes;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -10,6 +11,7 @@ import org.firstinspires.ftc.teamcode.competition.hardware.RobotLift;
 import org.firstinspires.ftc.teamcode.competition.hardware.TankDrive;
 import org.firstinspires.ftc.teamcode.competition.hardware.TankDriveBuilder;
 
+@Disabled
 @Autonomous(name="Land", group = "gen1")
 public class LandRobotAutonomous extends LinearOpMode {
 

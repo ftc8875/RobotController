@@ -5,8 +5,8 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
-import org.firstinspires.ftc.teamcode.santaclaus.components.Vuforia;
-import org.firstinspires.ftc.teamcode.santaclaus.components.VuforiaBuilder;
+import org.firstinspires.ftc.teamcode.newcode.components.Vuforia;
+import org.firstinspires.ftc.teamcode.newcode.components.VuforiaBuilder;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.santaclaus.opmodes;
+package org.firstinspires.ftc.teamcode.newcode.opmodes;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -7,14 +7,13 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
-import org.firstinspires.ftc.teamcode.santaclaus.components.RobotLift;
-import org.firstinspires.ftc.teamcode.santaclaus.components.Drivetrain;
-import org.firstinspires.ftc.teamcode.santaclaus.components.MineralRecognition;
-import org.firstinspires.ftc.teamcode.santaclaus.components.Vuforia;
+import org.firstinspires.ftc.teamcode.newcode.components.RobotLift;
+import org.firstinspires.ftc.teamcode.newcode.components.Drivetrain;
+import org.firstinspires.ftc.teamcode.newcode.components.MineralRecognition;
 
 import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection.BACK;
 
-@Autonomous(name = "Real Autonomous", group = "competition")
+@Autonomous(name = "Knock Gold Autonomous", group = "competition")
 public class CompetitionAutonomous extends LinearOpMode {
 
     Drivetrain drivetrain;
@@ -40,16 +39,20 @@ public class CompetitionAutonomous extends LinearOpMode {
 
         mineralRecognition = new MineralRecognition(vuforia, hardwareMap);
 
-        knockMineral = new KnockMineralBehavior(mineralRecognition, drivetrain, this);
+        knockMineral = new KnockGoldBehavior(mineralRecognition, drivetrain, this);
 
         telemetry.addLine("INITIALIZED!!!!!!!!!!");
         telemetry.update();
 
         waitForStart();
 
+        drivetrain.driveDistance(12.0, 0.2);
+        sleep(1000);
+
         mineralRecognition.activate();
         knockMineral.run();
-        telemetry.addLine("DONE! BOOM! NO OOPSIE WOOPSIE!");
+        telemetry.addLine("DONE!");
+        telemetry.addLine("Knocked? " + knockMineral.runWasSuccessful());
         telemetry.update();
 
         sleep(5000);
