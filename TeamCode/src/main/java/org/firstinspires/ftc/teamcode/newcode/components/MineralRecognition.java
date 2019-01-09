@@ -6,6 +6,7 @@ import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
@@ -44,8 +45,23 @@ public class MineralRecognition {
 
     private List<Recognition> updateRecognitions() {
         List<Recognition> recognitions = tfod.getUpdatedRecognitions();
+
+        recognitions = removeOutOfRangeRecognitions(recognitions);
+
         if (recognitions != null) {
             lastRecognitions = recognitions;
+        }
+        return recognitions;
+    }
+
+    private List<Recognition> removeOutOfRangeRecognitions(List<Recognition> recognitions) {
+        Iterator<Recognition> i = recognitions.iterator();
+        while (i.hasNext()) {
+            Recognition r = i.next();
+            double location = r.getTop() / r.getImageHeight();
+            if (location < 0.25) {
+                i.remove();
+            }
         }
         return recognitions;
     }

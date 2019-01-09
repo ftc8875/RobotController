@@ -81,18 +81,15 @@ public class KnockGoldBehavior implements RobotBehavior {
         double currentTime = opMode.getRuntime();
         double maxTime = currentTime + MINERAL_SEARCH_TIMEOUT_SEC;
         while (recognitions.size() != 1 && opMode.opModeIsActive()) {
+            List<String> recognitionNames = mineralRecognition.recognize();
             recognitions = mineralRecognition.getLastRecognitions();
-            for (Recognition r : recognitions) {
-                double location = r.getTop() / r.getImageHeight();
-                if (location < 0.25) {
-                    recognitions.remove(r);
-                }
-            }
+
             currentTime = opMode.getRuntime();
             if (currentTime > maxTime) {
                 return "";
             }
-            opMode.telemetry.addLine("Visible: " + recognitions.toString());
+            opMode.telemetry.addLine("Visible in range: " + recognitionNames.toString());
+            opMode.telemetry.addLine("Number in range: " + recognitions.size());
             opMode.telemetry.update();
             opMode.sleep(500);
             //opMode.telemetry.addLine(recognitions.toString());

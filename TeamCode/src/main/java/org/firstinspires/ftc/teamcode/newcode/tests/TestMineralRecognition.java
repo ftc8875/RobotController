@@ -36,14 +36,13 @@ public class TestMineralRecognition extends OpMode {
         List<String> minerals = mineralRecognition.recognize();
         List<Recognition> recognitions = mineralRecognition.getLastRecognitions();
 
+        //////////////////////////////////////////////////////////////////
+
+
+
+        ////////////////////////////////////////////////////////////////////
+
         if (minerals.size() != recognitions.size()) {
-            telemetry.addLine("OOPSIE WOOPSIE!!!");
-            telemetry.update();
-            for(double i=0; i < 10; i++) {
-                telemetry.addLine("OOPSIE WOOPSIE!!!");
-                telemetry.addLine(String.format("%.2f", i / Math.PI));
-                telemetry.update();
-            }
             return;
         }
 
