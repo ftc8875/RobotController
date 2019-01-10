@@ -1,67 +1,47 @@
 package org.firstinspires.ftc.teamcode.newcode.components;
 
-import android.provider.ContactsContract;
-
 import com.qualcomm.robotcore.hardware.Servo;
+
+import org.firstinspires.ftc.teamcode.newcode.opmodes.SwivelBehavior;
 
 public class PhoneSwivel {
 
     private Servo servo;
-    private double straightPos;
-    private double minPos;
-    private double maxPos;
-    private double minAngle;
-    private double maxAngle;
-    private double currentAngle;
+    private final double straightPos;
+    private final double leftPos;
+    private final double rightPos;
 
-    public enum Position {
-        LEFT, CENTER, RIGHT
-    }
-
-    public PhoneSwivel(Servo servo, double straightPos, double minPos, double minAngle, double maxPos, double maxAngle) {
+    public PhoneSwivel(Servo servo, double straightPos, double leftPos, double rightPos) {
         this.servo = servo;
         this.straightPos = straightPos;
-        this.minPos = minPos;
-        this.minAngle = minAngle;
-        this.maxPos = maxPos;
-        this.maxAngle = maxAngle;
-        swivel(0);
+        this.leftPos = leftPos;
+        this.rightPos = rightPos;
     }
 
-    public void swivel(double angle) {
-        angle = setCurrentAngle(angle);
-        servo.setPosition(angleToPos(angle));
+    /**
+     * Swivels the phone swivel servo to the specified position
+     * @param pos - the position
+     */
+    public void swivel(double pos) {
+        servo.setPosition(pos);
     }
 
-    public void swivel(Position position) {
+
+    /**
+     * Swivels the phone swivel servo to the position
+     * @param position - the position--LEFT, CENTER, RIGHT
+     */
+    public void swivel(SwivelBehavior.Position position) {
         switch(position) {
             case LEFT:
-                swivel(minAngle);
+                swivel(leftPos);
                 break;
             case RIGHT:
-                swivel(maxAngle);
+                swivel(rightPos);
                 break;
             case CENTER:
-                swivel(0);
+                swivel(straightPos);
                 break;
         }
-    }
-
-    private double angleToPos(double angle) {
-        return 0.0;
-    }
-
-    private double posToAngle(double pos) {
-        return 0.0;
-    }
-
-    private double setCurrentAngle(double angle) {
-        if (angle < minAngle) {
-            angle = minAngle;
-        } else if (angle > maxAngle) {
-            angle = maxAngle;
-        }
-        currentAngle = angle;
-        return angle;
     }
 }

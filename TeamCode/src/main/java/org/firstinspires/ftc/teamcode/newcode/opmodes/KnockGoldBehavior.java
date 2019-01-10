@@ -24,10 +24,11 @@ public class KnockGoldBehavior implements RobotBehavior {
     private boolean goldKnocked = false;
     private SwivelBehavior swivelBehavior;
 
-    public KnockGoldBehavior(MineralRecognition mineralRecognition, Drivetrain drivetrain, LinearOpMode opMode) {
+    public KnockGoldBehavior(MineralRecognition mineralRecognition, Drivetrain drivetrain, LinearOpMode opMode, SwivelBehavior swivelBehavior) {
         this.mineralRecognition = mineralRecognition;
         this.drivetrain = drivetrain;
         this.opMode = opMode;
+        this.swivelBehavior = swivelBehavior;
     }
 
     private void checkForGold(String positionName) {
@@ -39,6 +40,12 @@ public class KnockGoldBehavior implements RobotBehavior {
             bump();
             goldKnocked = true;
         }
+    }
+
+    // NEW AND IMPROVED!
+    protected void swivel(SwivelBehavior.Position position) {
+        swivelBehavior.setNextPosition(position);
+        swivelBehavior.run();
     }
 
     protected void swivel(double degrees) {

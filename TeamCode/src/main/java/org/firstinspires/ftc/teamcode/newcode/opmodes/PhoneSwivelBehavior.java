@@ -1,14 +1,12 @@
 package org.firstinspires.ftc.teamcode.newcode.opmodes;
 
-import android.provider.ContactsContract;
-
 import org.firstinspires.ftc.teamcode.newcode.components.PhoneSwivel;
 
-import static org.firstinspires.ftc.teamcode.newcode.components.PhoneSwivel.Position.CENTER;
+import static org.firstinspires.ftc.teamcode.newcode.opmodes.SwivelBehavior.Position.CENTER;
 
 public class PhoneSwivelBehavior implements SwivelBehavior {
 
-    private PhoneSwivel.Position desiredPosition;
+    private SwivelBehavior.Position desiredPosition;
     private PhoneSwivel phoneSwivel;
 
     public PhoneSwivelBehavior(PhoneSwivel phoneSwivel) {
@@ -26,7 +24,7 @@ public class PhoneSwivelBehavior implements SwivelBehavior {
         phoneSwivel.swivel(desiredPosition);
     }
 
-    public void setNextPosition(PhoneSwivel.Position position) {
+    public void setNextPosition(SwivelBehavior.Position position) {
         desiredPosition = position;
     }
 }

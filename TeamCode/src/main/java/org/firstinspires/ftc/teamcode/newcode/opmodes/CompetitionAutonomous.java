@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
+import org.firstinspires.ftc.teamcode.newcode.components.PhoneSwivel;
 import org.firstinspires.ftc.teamcode.newcode.components.RobotLift;
 import org.firstinspires.ftc.teamcode.newcode.components.Drivetrain;
 import org.firstinspires.ftc.teamcode.newcode.components.MineralRecognition;
@@ -19,6 +20,7 @@ public class CompetitionAutonomous extends LinearOpMode {
     Drivetrain drivetrain;
     MineralRecognition mineralRecognition;
     RobotLift robotLift;
+    PhoneSwivel phoneSwivel;
 
     private static final String VUFORIA_KEY = "AYfuV+P/////AAAAGTY+YjM4LE8HtPCZ1JH9+10fYp6RxcfbBLgIXt+cznm9RWskA72GmhlAOVQ8BsZUBVNpStBMsFbapua+e3iGRC2xd9+qd0NXHlwr7QD2NxEdX7T/XnG/mEMdrax2JiRKAlWorUMamvj3JJ02zhYJosP5X8iVcMq8G0ayaFE0LtVl9sdEtpJo9Ipdxx+X+Ns/+np0sMyK3SDY+yc2H6qT85Ro8gHneO0YMMwEZsnoTE+3uA6UGrmOHTqYLrr8SW/knYuvBcTNxqfFMfZFLPZUbX1270BcPJuZWF0aFArSbtbDVstT6r6F1PF/x730MjsV1ITATw+P9YUqx3xK86u6ZsVugfFXmehkmwrp/6Ag5SRs";
 
@@ -28,9 +30,10 @@ public class CompetitionAutonomous extends LinearOpMode {
         DcMotor leftMotor = hardwareMap.get(DcMotor.class, "l");
         DcMotor rightMotor = hardwareMap.get(DcMotor.class, "r");
         DcMotor liftMotor = hardwareMap.get(DcMotor.class, "lift");
-        Servo grabServo = hardwareMap.get(Servo.class, "grab");
+        Servo swivelServo = hardwareMap.get(Servo.class, "swivel");
         drivetrain = new Drivetrain(leftMotor, rightMotor);
         robotLift = new RobotLift(liftMotor);
+        phoneSwivel = new PhoneSwivel(swivelServo, 10, 20, 30);
 
         VuforiaLocalizer.Parameters p = new VuforiaLocalizer.Parameters();
         p.vuforiaLicenseKey = VUFORIA_KEY;
@@ -39,7 +42,8 @@ public class CompetitionAutonomous extends LinearOpMode {
 
         mineralRecognition = new MineralRecognition(vuforia, hardwareMap);
 
-        knockMineral = new KnockGoldBehavior(mineralRecognition, drivetrain, this);
+        SwivelBehavior swivelBehavior = new PhoneSwivelBehavior(phoneSwivel);
+        knockMineral = new KnockGoldBehavior(mineralRecognition, drivetrain, this, swivelBehavior);
 
         telemetry.addLine("INITIALIZED!!!!!!!!!!");
         telemetry.update();

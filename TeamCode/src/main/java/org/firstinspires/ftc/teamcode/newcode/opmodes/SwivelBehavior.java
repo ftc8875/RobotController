@@ -4,6 +4,10 @@ import org.firstinspires.ftc.teamcode.newcode.components.PhoneSwivel;
 
 public interface SwivelBehavior extends RobotBehavior {
 
-    void setNextPosition(PhoneSwivel.Position position);
+    enum Position {
+        LEFT, CENTER, RIGHT
+    }
+
+    void setNextPosition(Position position);
 
 }

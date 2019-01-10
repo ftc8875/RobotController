@@ -15,7 +15,7 @@ public class DriveTrainSwivelBehavior implements SwivelBehavior {
         this.turnPower = turnPower;
     }
 
-    public void setNextPosition(PhoneSwivel.Position position) {
+    public void setNextPosition(SwivelBehavior.Position position) {
 
     }
 
