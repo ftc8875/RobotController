@@ -1,8 +1,8 @@
-package org.firstinspires.ftc.teamcode.newcode.components;
+package org.firstinspires.ftc.teamcode.newcode.components.hardware;
 
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.teamcode.newcode.opmodes.SwivelBehavior;
+import org.firstinspires.ftc.teamcode.newcode.behavior.SwivelBehavior;
 
 public class PhoneSwivel {
 
@@ -10,12 +10,14 @@ public class PhoneSwivel {
     private final double straightPos;
     private final double leftPos;
     private final double rightPos;
+    private SwivelBehavior.Position currentPos;
 
     public PhoneSwivel(Servo servo, double straightPos, double leftPos, double rightPos) {
         this.servo = servo;
         this.straightPos = straightPos;
         this.leftPos = leftPos;
         this.rightPos = rightPos;
+        currentPos = SwivelBehavior.Position.OTHER;
     }
 
     /**
@@ -23,15 +25,17 @@ public class PhoneSwivel {
      * @param pos - the position
      */
     public void swivel(double pos) {
+        currentPos = SwivelBehavior.Position.OTHER;
         servo.setPosition(pos);
     }
 
 
     /**
      * Swivels the phone swivel servo to the position
-     * @param position - the position--LEFT, CENTER, RIGHT
+     * @param position - the position--LEFT, CENTER, RIGHT. If given OTHER, no action is taken.
      */
     public void swivel(SwivelBehavior.Position position) {
+        currentPos = position;
         switch(position) {
             case LEFT:
                 swivel(leftPos);
@@ -43,5 +47,9 @@ public class PhoneSwivel {
                 swivel(straightPos);
                 break;
         }
+    }
+
+    public SwivelBehavior.Position getCurrentPos() {
+        return currentPos;
     }
 }

@@ -1,8 +1,8 @@
-package org.firstinspires.ftc.teamcode.newcode.opmodes;
+package org.firstinspires.ftc.teamcode.newcode.behavior;
 
-import org.firstinspires.ftc.teamcode.newcode.components.Drivetrain;
+import org.firstinspires.ftc.teamcode.newcode.components.hardware.Drivetrain;
 
-import static org.firstinspires.ftc.teamcode.newcode.opmodes.SwivelBehavior.Position.CENTER;
+import static org.firstinspires.ftc.teamcode.newcode.behavior.SwivelBehavior.Position.CENTER;
 
 public class RobotSwivelBehavior implements SwivelBehavior {
 

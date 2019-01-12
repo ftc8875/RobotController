@@ -3,10 +3,8 @@ package org.firstinspires.ftc.teamcode.newcode.tests;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.teamcode.newcode.components.Drivetrain;
-import org.firstinspires.ftc.teamcode.newcode.components.RobotLift;
+import org.firstinspires.ftc.teamcode.newcode.components.hardware.Drivetrain;
 
 @TeleOp(name="Drive One Foot", group="test")
 public class TestDriveOneFoot extends LinearOpMode {

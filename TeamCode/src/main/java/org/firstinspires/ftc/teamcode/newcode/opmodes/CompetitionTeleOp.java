@@ -5,9 +5,9 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.teamcode.newcode.components.Drivetrain;
-import org.firstinspires.ftc.teamcode.newcode.components.RobotLift;
-import org.firstinspires.ftc.teamcode.newcode.components.Grabber;
+import org.firstinspires.ftc.teamcode.newcode.components.hardware.Drivetrain;
+import org.firstinspires.ftc.teamcode.newcode.components.hardware.RobotLift;
+import org.firstinspires.ftc.teamcode.newcode.components.hardware.Grabber;
 
 @TeleOp(name = "Gen 3", group = "competition")
 public class CompetitionTeleOp extends OpMode {

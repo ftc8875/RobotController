@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.teamcode.competition.hardware;
 
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
-import org.firstinspires.ftc.teamcode.newcode.components.Vuforia;
+import org.firstinspires.ftc.teamcode.newcode.components.software.Vuforia;
 
 public class TankDriveVuforia extends TankDriveEncoders {
 

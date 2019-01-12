@@ -6,14 +6,14 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
-import org.firstinspires.ftc.teamcode.newcode.components.MineralRecognition;
+import org.firstinspires.ftc.teamcode.newcode.components.software.MineralRecognition;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection.BACK;
 
-@TeleOp(name="CRATERS ARE HOLY", group="test")
+@TeleOp(name="Test Mineral Recognition", group="test")
 public class TestMineralRecognitionCrater extends LinearOpMode {
 
     private static final double MINERAL_SEARCH_TIMEOUT_SEC = 10.0;
@@ -34,26 +34,14 @@ public class TestMineralRecognitionCrater extends LinearOpMode {
         mineralRecognition.activate();
 
         List<Recognition> recognitions = new ArrayList<>();
-        double currentTime = getRuntime();
-        double maxTime = currentTime + MINERAL_SEARCH_TIMEOUT_SEC;
-        while (recognitions.size() != 1 && opModeIsActive()) {
+        while (opModeIsActive()) {
             List<String> recognitionStrings = mineralRecognition.recognize();
             recognitions = mineralRecognition.getLastRecognitions();
-            for (Recognition r : recognitions) {
-                double location = r.getTop() / r.getImageHeight();
-                if (location < 0.25) {
-                    recognitions.remove(r);
-                }
-            }
-            currentTime = getRuntime();
-            if (currentTime > maxTime) {
-                telemetry.addLine("Timed out...");
-                telemetry.update();
-                sleep(1000);
-                return;
-            }
+            String centralRecognition = mineralRecognition.getCentralRecognitionLabel();
+
             telemetry.addLine("Visible: " + recognitionStrings.toString());
             telemetry.addLine("Count: " + recognitions.size());
+            telemetry.addLine("CENTRAL: " + centralRecognition);
             telemetry.update();
             sleep(500);
             //opMode.telemetry.addLine(recognitions.toString());

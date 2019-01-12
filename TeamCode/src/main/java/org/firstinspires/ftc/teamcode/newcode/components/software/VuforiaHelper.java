@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.newcode.components;
+package org.firstinspires.ftc.teamcode.newcode.components.software;
 
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.matrices.VectorF;

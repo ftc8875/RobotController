@@ -1,18 +1,19 @@
 package org.firstinspires.ftc.teamcode.newcode.tests;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
-import org.firstinspires.ftc.teamcode.newcode.components.MineralRecognition;
+import org.firstinspires.ftc.teamcode.newcode.components.software.MineralRecognition;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 
 import java.util.List;
 
 import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection.BACK;
 
+@Disabled // broken
 @TeleOp(name="Test Mineral Recognition",group="test")
 public class TestMineralRecognition extends OpMode {
 
@@ -35,13 +36,6 @@ public class TestMineralRecognition extends OpMode {
         telemetry.addLine("Minerals Found:");
         List<String> minerals = mineralRecognition.recognize();
         List<Recognition> recognitions = mineralRecognition.getLastRecognitions();
-
-        //////////////////////////////////////////////////////////////////
-
-
-
-        ////////////////////////////////////////////////////////////////////
-
         if (minerals.size() != recognitions.size()) {
             return;
         }

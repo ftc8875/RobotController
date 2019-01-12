@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.newcode.components;
+package org.firstinspires.ftc.teamcode.newcode.components.software;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
@@ -6,6 +6,7 @@ import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -43,6 +44,27 @@ public class MineralRecognition {
         return recognitionsToStrings(lastRecognitions);
     }
 
+    public String recognizeOne() {
+        updateRecognitions();
+        Recognition centralRecognition = getCentralRecognition(lastRecognitions);
+        if (centralRecognition == null) {
+            return "";
+        }
+        return centralRecognition.getLabel();
+    }
+
+    public Recognition getCentralRecognition() {
+        return getCentralRecognition(lastRecognitions);
+    }
+
+    public String getCentralRecognitionLabel() {
+        Recognition centralRecognition = getCentralRecognition();
+        if (centralRecognition == null) {
+            return "";
+        }
+        return centralRecognition.getLabel();
+    }
+
     private List<Recognition> updateRecognitions() {
         List<Recognition> recognitions = tfod.getUpdatedRecognitions();
 
@@ -54,13 +76,35 @@ public class MineralRecognition {
         return recognitions;
     }
 
+    private Recognition getCentralRecognition(List<Recognition> recognitions) {
+        if (recognitions.size() == 0) {
+            return null;
+        }
+        double center = 0.5;
+        List<Double> offsets = new ArrayList<>();
+        for (Recognition r : recognitions) {
+             double location = r.getRight() / r.getImageWidth();
+            offsets.add(Math.abs(location - center));
+        }
+        // Get the index of the smallest offset. Return the corresponding Recognition.
+        return recognitions.get(offsets.indexOf(Collections.min(offsets)));
+
+    }
+
+    // removes all minerals that are too high (i.e. probably in the crater)
     private List<Recognition> removeOutOfRangeRecognitions(List<Recognition> recognitions) {
-        Iterator<Recognition> i = recognitions.iterator();
-        while (i.hasNext()) {
-            Recognition r = i.next();
+        if (recognitions.size() == 0) {
+            return recognitions;
+        }
+        List<Double> locations = new ArrayList<>();
+        for (Recognition r : recognitions) {
             double location = r.getTop() / r.getImageHeight();
-            if (location < 0.25) {
-                i.remove();
+            locations.add(location);
+        }
+        double minLocation = Collections.min(locations);
+        for (int i=0; i<recognitions.size(); i++) {
+            if (locations.get(i) < minLocation - 0.05) {
+                recognitions.remove(i);
             }
         }
         return recognitions;

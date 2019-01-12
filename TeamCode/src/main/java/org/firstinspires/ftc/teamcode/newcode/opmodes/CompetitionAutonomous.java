@@ -7,10 +7,14 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
-import org.firstinspires.ftc.teamcode.newcode.components.PhoneSwivel;
-import org.firstinspires.ftc.teamcode.newcode.components.RobotLift;
-import org.firstinspires.ftc.teamcode.newcode.components.Drivetrain;
-import org.firstinspires.ftc.teamcode.newcode.components.MineralRecognition;
+import org.firstinspires.ftc.teamcode.newcode.behavior.KnockGoldBehavior;
+import org.firstinspires.ftc.teamcode.newcode.behavior.PhoneSwivelBehavior;
+import org.firstinspires.ftc.teamcode.newcode.behavior.RobotBehavior;
+import org.firstinspires.ftc.teamcode.newcode.behavior.SwivelBehavior;
+import org.firstinspires.ftc.teamcode.newcode.components.hardware.PhoneSwivel;
+import org.firstinspires.ftc.teamcode.newcode.components.hardware.RobotLift;
+import org.firstinspires.ftc.teamcode.newcode.components.hardware.Drivetrain;
+import org.firstinspires.ftc.teamcode.newcode.components.software.MineralRecognition;
 
 import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection.BACK;
 
@@ -27,6 +31,22 @@ public class CompetitionAutonomous extends LinearOpMode {
     private RobotBehavior knockMineral;
 
     public void runOpMode() {
+        initRobot();
+
+        waitForStart();
+
+        run();
+    }
+
+    private void initRobot() {
+        initHardware();
+        initMineralRecognition();
+        initKnockBehavior();
+        telemetry.addLine("INITIALIZED!!!!!!!!!!");
+        telemetry.update();
+    }
+
+    private void initHardware() {
         DcMotor leftMotor = hardwareMap.get(DcMotor.class, "l");
         DcMotor rightMotor = hardwareMap.get(DcMotor.class, "r");
         DcMotor liftMotor = hardwareMap.get(DcMotor.class, "lift");
@@ -34,22 +54,22 @@ public class CompetitionAutonomous extends LinearOpMode {
         drivetrain = new Drivetrain(leftMotor, rightMotor);
         robotLift = new RobotLift(liftMotor);
         phoneSwivel = new PhoneSwivel(swivelServo, 10, 20, 30);
+    }
 
+    private void initMineralRecognition() {
         VuforiaLocalizer.Parameters p = new VuforiaLocalizer.Parameters();
         p.vuforiaLicenseKey = VUFORIA_KEY;
         p.cameraDirection = BACK;
         VuforiaLocalizer vuforia = ClassFactory.getInstance().createVuforia(p);
-
         mineralRecognition = new MineralRecognition(vuforia, hardwareMap);
+    }
 
+    private void initKnockBehavior() {
         SwivelBehavior swivelBehavior = new PhoneSwivelBehavior(phoneSwivel);
         knockMineral = new KnockGoldBehavior(mineralRecognition, drivetrain, this, swivelBehavior);
+    }
 
-        telemetry.addLine("INITIALIZED!!!!!!!!!!");
-        telemetry.update();
-
-        waitForStart();
-
+    private void run() {
         drivetrain.driveDistance(12.0, 0.2);
         sleep(1000);
 

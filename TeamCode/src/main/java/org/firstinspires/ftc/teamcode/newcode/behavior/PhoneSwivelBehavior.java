@@ -1,8 +1,8 @@
-package org.firstinspires.ftc.teamcode.newcode.opmodes;
+package org.firstinspires.ftc.teamcode.newcode.behavior;
 
-import org.firstinspires.ftc.teamcode.newcode.components.PhoneSwivel;
+import org.firstinspires.ftc.teamcode.newcode.components.hardware.PhoneSwivel;
 
-import static org.firstinspires.ftc.teamcode.newcode.opmodes.SwivelBehavior.Position.CENTER;
+import static org.firstinspires.ftc.teamcode.newcode.behavior.SwivelBehavior.Position.CENTER;
 
 public class PhoneSwivelBehavior implements SwivelBehavior {
 
