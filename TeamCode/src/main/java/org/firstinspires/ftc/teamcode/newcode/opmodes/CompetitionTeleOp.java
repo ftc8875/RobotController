@@ -61,8 +61,8 @@ public class CompetitionTeleOp extends OpMode {
             grabber.release();
         }
 
-        telemetry.addData("Drive", drivePower);
-        telemetry.addData("Steer", steerPower);
+        telemetry.addData("Drive", "%.2f", drivePower);
+        telemetry.addData("Steer", "%.2f", steerPower);
         telemetry.addData("Extend", extendLift);
         telemetry.addData("Retract", retractLift);
         telemetry.addData("Grab", grab);
