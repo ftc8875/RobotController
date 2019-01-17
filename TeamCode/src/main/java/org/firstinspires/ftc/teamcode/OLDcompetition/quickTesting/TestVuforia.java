@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.OLDcompetition.quickTesting;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
@@ -10,6 +11,7 @@ import org.firstinspires.ftc.teamcode.newcode.components.software.VuforiaBuilder
 
 import java.util.List;
 
+@Disabled
 @Autonomous(name="Test Vuforia", group="test")
 public class TestVuforia extends OpMode {
 
