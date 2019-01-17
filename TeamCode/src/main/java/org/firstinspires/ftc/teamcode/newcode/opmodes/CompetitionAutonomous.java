@@ -21,10 +21,10 @@ import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocaliz
 @Autonomous(name = "Knock Gold Autonomous", group = "competition")
 public class CompetitionAutonomous extends LinearOpMode {
 
-    Drivetrain drivetrain;
-    MineralRecognition mineralRecognition;
-    RobotLift robotLift;
-    PhoneSwivel phoneSwivel;
+    private Drivetrain drivetrain;
+    private MineralRecognition mineralRecognition;
+    private RobotLift robotLift;
+    private PhoneSwivel phoneSwivel;
 
     private static final String VUFORIA_KEY = "AYfuV+P/////AAAAGTY+YjM4LE8HtPCZ1JH9+10fYp6RxcfbBLgIXt+cznm9RWskA72GmhlAOVQ8BsZUBVNpStBMsFbapua+e3iGRC2xd9+qd0NXHlwr7QD2NxEdX7T/XnG/mEMdrax2JiRKAlWorUMamvj3JJ02zhYJosP5X8iVcMq8G0ayaFE0LtVl9sdEtpJo9Ipdxx+X+Ns/+np0sMyK3SDY+yc2H6qT85Ro8gHneO0YMMwEZsnoTE+3uA6UGrmOHTqYLrr8SW/knYuvBcTNxqfFMfZFLPZUbX1270BcPJuZWF0aFArSbtbDVstT6r6F1PF/x730MjsV1ITATw+P9YUqx3xK86u6ZsVugfFXmehkmwrp/6Ag5SRs";
 

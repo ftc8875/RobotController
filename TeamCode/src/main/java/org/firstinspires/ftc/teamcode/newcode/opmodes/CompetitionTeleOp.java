@@ -12,9 +12,9 @@ import org.firstinspires.ftc.teamcode.newcode.components.hardware.Grabber;
 @TeleOp(name = "Gen 3", group = "competition")
 public class CompetitionTeleOp extends OpMode {
 
-    Drivetrain drivetrain;
-    RobotLift robotLift;
-    Grabber grabber;
+    private Drivetrain drivetrain;
+    private RobotLift robotLift;
+    private Grabber grabber;
 
     @Override
     public void init() {
