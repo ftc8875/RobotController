@@ -27,6 +27,10 @@ public class RobotLift {
         liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 
+    public boolean isBusy() {
+        return liftMotor.isBusy();
+    }
+
     public void extend() {
         liftMotor.setTargetPosition(EXTEND_POSITION);
         liftMotor.setPower(MOTOR_POWER);

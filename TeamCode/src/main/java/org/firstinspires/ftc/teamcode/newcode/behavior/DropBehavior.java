@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode.newcode.behavior;
 
-import org.firstinspires.ftc.teamcode.OLDcompetition.hardware.RobotLift;
+import org.firstinspires.ftc.teamcode.newcode.components.hardware.RobotLift;
 
 public class DropBehavior implements RobotBehavior {
 
@@ -13,7 +13,7 @@ public class DropBehavior implements RobotBehavior {
     @Override
     public void run() {
         robotLift.extend();
-        while (robotLift.liftBusy()) {}
+        while (robotLift.isBusy()) {}
     }
 
     @Override
