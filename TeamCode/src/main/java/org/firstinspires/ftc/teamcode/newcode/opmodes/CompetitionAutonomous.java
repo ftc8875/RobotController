@@ -22,6 +22,10 @@ import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocaliz
 @Autonomous(name = "Knock Gold Autonomous", group = "competition")
 public class CompetitionAutonomous extends LinearOpMode {
 
+    private static final double SWIVEL_STRAIGHT = 0.40;
+    private static final double SWIVEL_LEFT = 0.27;
+    private static final double SWIVEL_RIGHT = 0.47;
+
     private Drivetrain drivetrain;
     private MineralRecognition mineralRecognition;
     private RobotLift robotLift;
@@ -55,7 +59,7 @@ public class CompetitionAutonomous extends LinearOpMode {
         Servo swivelServo = hardwareMap.get(Servo.class, "swivel");
         drivetrain = new Drivetrain(leftMotor, rightMotor);
         robotLift = new RobotLift(liftMotor);
-        phoneSwivel = new PhoneSwivel(swivelServo, 10, 20, 30);
+        phoneSwivel = new PhoneSwivel(swivelServo, 0.40, 0.27, 0.47);
     }
 
     private void initMineralRecognition() {
