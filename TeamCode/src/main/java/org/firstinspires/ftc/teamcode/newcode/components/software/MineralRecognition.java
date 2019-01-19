@@ -67,6 +67,9 @@ public class MineralRecognition {
 
     private List<Recognition> updateRecognitions() {
         List<Recognition> recognitions = tfod.getUpdatedRecognitions();
+        if (recognitions == null) {
+            recognitions = new ArrayList<>();
+        }
 
         recognitions = removeOutOfRangeRecognitions(recognitions);
 

@@ -39,19 +39,23 @@ public class CompetitionAutonomous extends LinearOpMode {
 
     public void runOpMode() {
         initRobot();
-        selectOptions();
+        //selectOptions();
         waitForStart();
         run();
     }
 
     private void selectOptions() {
-        while(!gamepad1.a) {
+        double maxRuntime = getRuntime() + 15.0;
+        while(!gamepad1.a && getRuntime() < maxRuntime) {
             if (gamepad1.right_bumper) {
                 drop = !drop;
             }
             telemetry.addLine("Drop Robot: " + drop);
             telemetry.update();
         }
+        telemetry.addLine("SELECTED");
+        telemetry.addLine("Drop Robot: " + drop);
+        telemetry.update();
     }
 
     private void initRobot() {
@@ -69,7 +73,7 @@ public class CompetitionAutonomous extends LinearOpMode {
         Servo swivelServo = hardwareMap.get(Servo.class, "swivel");
         drivetrain = new Drivetrain(leftMotor, rightMotor);
         robotLift = new RobotLift(liftMotor);
-        phoneSwivel = new PhoneSwivel(swivelServo, 0.40, 0.27, 0.47);
+        phoneSwivel = new PhoneSwivel(swivelServo);
     }
 
     private void initMineralRecognition() {
@@ -91,7 +95,7 @@ public class CompetitionAutonomous extends LinearOpMode {
             dropRobot.run();
         }
 
-        drivetrain.driveDistance(12.0, 0.2);
+        //drivetrain.driveDistance(12.0, 0.2);
         sleep(1000);
 
         mineralRecognition.activate();

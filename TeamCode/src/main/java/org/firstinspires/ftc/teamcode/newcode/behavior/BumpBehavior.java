@@ -6,7 +6,7 @@ import org.firstinspires.ftc.teamcode.newcode.components.hardware.Drivetrain;
 
 public class BumpBehavior implements RobotBehavior {
 
-    private static final double BUMP_INCHES = 48.0;
+    private static final double BUMP_INCHES = 42.0;
     private static final double BUMP_POWER = 0.25;
 
     private Drivetrain drivetrain;

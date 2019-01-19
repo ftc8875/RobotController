@@ -6,11 +6,19 @@ import org.firstinspires.ftc.teamcode.newcode.behavior.SwivelBehavior;
 
 public class PhoneSwivel {
 
+    private static final double STRAIGHT_POS = 0.35;
+    private static final double LEFT_POS = 0.15;
+    private static final double RIGHT_POS = 0.48;
+
     private Servo servo;
     private final double straightPos;
     private final double leftPos;
     private final double rightPos;
     private SwivelBehavior.Position currentPos;
+
+    public PhoneSwivel(Servo servo) {
+        this(servo, STRAIGHT_POS, LEFT_POS, RIGHT_POS);
+    }
 
     public PhoneSwivel(Servo servo, double straightPos, double leftPos, double rightPos) {
         this.servo = servo;

@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.newcode.behavior;
 import org.firstinspires.ftc.teamcode.newcode.components.hardware.Drivetrain;
 
 import static org.firstinspires.ftc.teamcode.newcode.behavior.SwivelBehavior.Position.CENTER;
+import static org.firstinspires.ftc.teamcode.newcode.behavior.SwivelBehavior.Position.RIGHT;
 
 public class RobotSwivelBehavior implements SwivelBehavior {
 
@@ -10,8 +11,8 @@ public class RobotSwivelBehavior implements SwivelBehavior {
     private static final double TURN_POWER = 0.20;
 
     private Drivetrain drivetrain;
-    private Position desiredPosition = CENTER;
-    private double currentDegrees = 0.0;
+    private Position desiredPosition = RIGHT;
+    private double currentDegrees = positionToDegrees(RIGHT);
 
     public RobotSwivelBehavior(Drivetrain drivetrain) {
         this.drivetrain = drivetrain;
@@ -36,10 +37,13 @@ public class RobotSwivelBehavior implements SwivelBehavior {
     }
 
     public void run() {
-        double turnDegrees = positionToDegrees(desiredPosition) - currentDegrees;
+        double newDegrees = positionToDegrees(desiredPosition);
+        double turnDegrees = newDegrees - currentDegrees;
         drivetrain.turn(turnDegrees, TURN_POWER);
 
         while(drivetrain.isBusy()) {}
+
+        currentDegrees = newDegrees;
     }
 
     @Override

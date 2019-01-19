@@ -57,6 +57,9 @@ public class KnockGoldBehavior implements RobotBehavior {
             swivelRobot(position);
             bump();
             goldKnocked = true;
+        } else {
+            opMode.telemetry.addLine("Not gold"); opMode.telemetry.update();
+            opMode.sleep(1000);
         }
     }
 
@@ -64,6 +67,7 @@ public class KnockGoldBehavior implements RobotBehavior {
     private void swivel(SwivelBehavior.Position position) {
         swivelBehavior.setNextPosition(position);
         swivelBehavior.run();
+        opMode.sleep(2000);
     }
 
     private void swivelRobot(SwivelBehavior.Position position) {
@@ -72,6 +76,7 @@ public class KnockGoldBehavior implements RobotBehavior {
     }
 
     public void run() {
+        swivel(SwivelBehavior.Position.CENTER);
         checkForGold(SwivelBehavior.Position.CENTER);
         if (goldKnocked) {
             return;

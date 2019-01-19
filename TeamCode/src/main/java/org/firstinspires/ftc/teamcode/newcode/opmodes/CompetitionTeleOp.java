@@ -29,8 +29,8 @@ public class CompetitionTeleOp extends OpMode {
 
     @Override
     public void loop() {
-        double drivePower = Math.pow(-gamepad1.left_stick_y, 3);
-        double steerPower = Math.pow(gamepad1.right_stick_x, 3);
+        double drivePower = Math.pow(gamepad1.left_stick_y, 3);
+        double steerPower = Math.pow(-gamepad1.right_stick_x, 3);
         boolean extendLift = gamepad2.x;
         boolean retractLift = gamepad2.a;
         boolean grab = gamepad2.right_bumper;
