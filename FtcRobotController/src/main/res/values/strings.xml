@@ -53,7 +53,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
   <!-- Toast messages -->
   <string name="toastWifiConfigurationComplete">WiFi configuration complete</string>
-  <string name="toastRestartingRobot">Restarting robot...</string>
+  <string name="toastRestartingRobot">Restarting Robot</string>
   <string name="toastConfigureRobotBeforeProgrammingMode">You must Configure Robot before entering Programming Mode</string>
 
   <!-- for interpreting pref_app_theme contents. may be override in merged resources -->

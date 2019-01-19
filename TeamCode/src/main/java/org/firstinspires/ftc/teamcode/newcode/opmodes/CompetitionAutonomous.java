@@ -39,7 +39,12 @@ public class CompetitionAutonomous extends LinearOpMode {
 
     public void runOpMode() {
         initRobot();
+        selectOptions();
+        waitForStart();
+        run();
+    }
 
+    private void selectOptions() {
         while(!gamepad1.a) {
             if (gamepad1.right_bumper) {
                 drop = !drop;
@@ -47,12 +52,6 @@ public class CompetitionAutonomous extends LinearOpMode {
             telemetry.addLine("Drop Robot: " + drop);
             telemetry.update();
         }
-
-        telemetry.addLine("Drop Robot: " + drop);
-
-        waitForStart();
-
-        run();
     }
 
     private void initRobot() {
