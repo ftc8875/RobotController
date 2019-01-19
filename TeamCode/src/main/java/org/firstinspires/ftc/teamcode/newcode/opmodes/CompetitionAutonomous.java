@@ -35,9 +35,20 @@ public class CompetitionAutonomous extends LinearOpMode {
 
     private RobotBehavior knockMineral;
     private RobotBehavior dropRobot;
+    private boolean drop = false;
 
     public void runOpMode() {
         initRobot();
+
+        while(!gamepad1.a) {
+            if (gamepad1.right_bumper) {
+                drop = !drop;
+            }
+            telemetry.addLine("Drop Robot: " + drop);
+            telemetry.update();
+        }
+
+        telemetry.addLine("Drop Robot: " + drop);
 
         waitForStart();
 
@@ -77,10 +88,9 @@ public class CompetitionAutonomous extends LinearOpMode {
     }
 
     private void run() {
-        //////////////////////////////////////////////////
-        // Uncomment to drop robot from lifted position //
-        //////////////////////////////////////////////////
-        //dropRobot.run();
+        if (drop) {
+            dropRobot.run();
+        }
 
         drivetrain.driveDistance(12.0, 0.2);
         sleep(1000);
