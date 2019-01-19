@@ -5,7 +5,9 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.teamcode.newcode.behavior.SwivelBehavior;
 import org.firstinspires.ftc.teamcode.newcode.components.hardware.Drivetrain;
+import org.firstinspires.ftc.teamcode.newcode.components.hardware.PhoneSwivel;
 import org.firstinspires.ftc.teamcode.newcode.components.hardware.RobotLift;
 import org.firstinspires.ftc.teamcode.newcode.components.hardware.Grabber;
 
@@ -14,27 +16,29 @@ public class CompetitionTeleOp extends OpMode {
 
     private Drivetrain drivetrain;
     private RobotLift robotLift;
-    private Grabber grabber;
+    private PhoneSwivel phoneSwivel;
 
     @Override
     public void init() {
         DcMotor leftMotor = hardwareMap.get(DcMotor.class, "l");
         DcMotor rightMotor = hardwareMap.get(DcMotor.class, "r");
         DcMotor liftMotor = hardwareMap.get(DcMotor.class, "lift");
-        Servo grabServo = hardwareMap.get(Servo.class, "grab");
+        Servo swivelServo = hardwareMap.get(Servo.class, "swivel");
         drivetrain = new Drivetrain(leftMotor, rightMotor);
         robotLift = new RobotLift(liftMotor);
-        grabber = new Grabber(grabServo);
+        phoneSwivel = new PhoneSwivel(swivelServo);
+    }
+
+    public void start() {
+        phoneSwivel.swivel(SwivelBehavior.Position.RIGHT);
     }
 
     @Override
     public void loop() {
-        double drivePower = Math.pow(gamepad1.left_stick_y, 3);
-        double steerPower = Math.pow(-gamepad1.right_stick_x, 3);
+        double drivePower = Math.pow(gamepad1.left_stick_y, 1);
+        double steerPower = Math.pow(gamepad1.right_stick_x, 1);
         boolean extendLift = gamepad2.x;
         boolean retractLift = gamepad2.a;
-        boolean grab = gamepad2.right_bumper;
-        boolean release = gamepad2.left_bumper;
         boolean stop = gamepad2.b;
         boolean bumpUp = gamepad2.dpad_up;
         boolean bumpDown = gamepad2.dpad_down;
@@ -55,17 +59,9 @@ public class CompetitionTeleOp extends OpMode {
             robotLift.stop();
         }
 
-        if (grab) {
-            grabber.grab();
-        } else if (release) {
-            grabber.release();
-        }
-
         telemetry.addData("Drive", "%.2f", drivePower);
         telemetry.addData("Steer", "%.2f", steerPower);
         telemetry.addData("Extend", extendLift);
         telemetry.addData("Retract", retractLift);
-        telemetry.addData("Grab", grab);
-        telemetry.addData("Release", release);
     }
 }
